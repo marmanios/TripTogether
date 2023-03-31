@@ -146,13 +146,13 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "triptogether",
+      "name": "flutterapp",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-03-31T22:26:39.341087Z",
+  "generated": "2023-03-31T22:40:22.385297Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
