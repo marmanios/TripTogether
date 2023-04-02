@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: new BoxDecoration(color: Colors.white),
+            decoration: const BoxDecoration(color: Colors.white),
           ),
           SafeArea(
             child: Padding(
@@ -73,7 +73,7 @@ class LoginPage extends StatelessWidget {
                       child: const Text(
                         "LOGIN",
                         style: TextStyle(
-                            color: kSecondaryColor,
+                            color: buttonTextColor,
                             fontWeight: FontWeight.bold,
                             fontSize: buttonTextSize),
                       ),
@@ -93,7 +93,10 @@ class LoginPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           'OR',
-                          style: TextStyle(fontSize: 16, color: orLineColor),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: orLineColor,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                       Flexible(
@@ -107,38 +110,39 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Material(
                         elevation: 4,
                         shadowColor: Colors.grey.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(30),
                         child: CircleAvatar(
-                          backgroundColor: facebookColor,
-                          radius: 30,
+                          backgroundColor: Colors.white,
+                          radius: 25,
                           child: IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               FontAwesome.facebook,
-                              color: Colors.white,
-                              size: 32.0,
+                              color: facebookColor,
+                              size: 30,
                             ),
                           ),
                         ),
                       ),
+                      const SizedBox(width: 20),
                       Material(
                         elevation: 4,
                         shadowColor: Colors.grey.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(30),
                         child: CircleAvatar(
-                          backgroundColor: googleColor,
-                          radius: 30,
+                          backgroundColor: Colors.white,
+                          radius: 25,
                           child: IconButton(
                             onPressed: () {},
                             icon: Icon(
                               FontAwesome.google,
-                              color: Colors.white,
-                              size: 32.0,
+                              color: googleColor,
+                              size: 30,
                             ),
                           ),
                         ),
