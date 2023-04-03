@@ -1,10 +1,10 @@
 // This dart file was based off of
 // https://github.com/RivaanRanawat/flutter-amazon-clone-tutorial/blob/master/lib/common/widgets/custom_textfield.dart
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+// ignore: unnecessary_new
 var maskFormatter = new MaskTextInputFormatter(
     mask: '(###) ###-####',
     filter: {"#": RegExp(r'[0-9]')},
@@ -14,7 +14,7 @@ class CustomNumberField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final int maxLines;
-  CustomNumberField({
+  const CustomNumberField({
     Key? key,
     required this.controller,
     required this.hintText,
