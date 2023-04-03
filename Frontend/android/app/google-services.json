@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "976584154745",
+    "project_id": "triptogether-25a8e",
+    "storage_bucket": "triptogether-25a8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976584154745:android:bf98ed20c9a07e3cb1fea8",
+        "android_client_info": {
+          "package_name": "com.example.flutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976584154745-g7glate1fav7vmgrk6uho6hkd81sn9v5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR7gn6DbZnIX-CL7RJKTH4D9AjodKlU00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976584154745-g7glate1fav7vmgrk6uho6hkd81sn9v5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
