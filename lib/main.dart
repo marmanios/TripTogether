@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'loginpage.dart';
-import 'registrationpage.dart';
+import 'auth/screens/registrationPage.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 // add library for getx
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'TripTogether',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: RegistertionPage(),
+      home: RegistrationPage(),
     );
   }
 }
