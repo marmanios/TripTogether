@@ -7,7 +7,7 @@ import '../controllers/LoginController.dart';
 
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:gradient_widgets/gradient_widgets.dart';
-
+// Nice
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -71,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       CustomTextField(
                         controller: _passwordController,
-                        hintText: 'Needs 6+ characters, a capital letter & a symbol',
+                        hintText:
+                            'Needs 6+ characters, a capital letter & a symbol',
                         hideText: true,
                         labelText: 'Password',
                         regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[!@#\$&*~]).{6,}$'),
