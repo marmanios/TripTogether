@@ -17,6 +17,7 @@ class LoginController {
     required String password,
     required String email,
     required String phoneNumber,
+    required String gender,
   }) async {
     showDialog(
         context: context,
@@ -28,9 +29,10 @@ class LoginController {
           .createUserWithEmailAndPassword(email: email, password: password);
       await db.collection('users').doc(userCredentials.user?.uid).set({
         "name": name,
-        "phoneNumber":phoneNumber,
-        "rating":3
-        });
+        "phoneNumber": phoneNumber,
+        "rating": 3,
+        "isFemale": gender == "Female",
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -38,6 +40,10 @@ class LoginController {
       } else if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(context)
             .showSnackBar(generateSnackbar(text: "Error: The Email Is In Use"));
+      } else if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(generateSnackbar(text: "Error: Email Badly Formatted"));
+      
       }
     }
     Navigator.of(context, rootNavigator: true).pop();

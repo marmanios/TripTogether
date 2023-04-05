@@ -7,6 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'auth/screens/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+
 // add library for getx
 
 Future<void> main() async {

@@ -64,13 +64,17 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       CustomTextField(
                         controller: _emailController,
-                        hintText: 'Email',
+                        hintText: 'Email must follow format XXX@XXX.XX',
+                        labelText: 'Email',
                         hideText: false,
+                        regex: RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$'),
                       ),
                       CustomTextField(
                         controller: _passwordController,
-                        hintText: 'Password',
+                        hintText: 'Needs 6+ characters, a capital letter & a symbol',
                         hideText: true,
+                        labelText: 'Password',
+                        regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[!@#\$&*~]).{6,}$'),
                       ),
                       const SizedBox(height: 50),
                       CustomButton(

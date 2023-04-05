@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../common/widgets/custom_genderdropbox.dart';
 import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_numberfield.dart';
@@ -23,6 +24,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
   final _signUpFormKey = GlobalKey<FormState>();
 
   @override
@@ -34,36 +36,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
   }
-
-  // void signUpUser() {
-  //   final String name = _nameController.text;
-  //   final String email = _emailController.text;
-  //   final String password = _passwordController.text;
-
-  //   // Save the registration data to a text file
-  //   final String data = '$name, $email, $password\n';
-  //   final File file = File('registration_data.txt');
-  //   file.writeAsStringSync(data, mode: FileMode.append);
-
-  //   // Show a dialog to confirm that the registration data was saved
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Registration complete'),
-  //         content: const Text('Your registration data has been saved.'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             },
-  //             child: const Text('OK'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,15 +54,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               const Text(
                 "Register",
                 style: TextStyle(
-                    color: registerTitleColor,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: registerTitleFontSize),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Please enter details to register',
-                style: TextStyle(
-                    color: kTextFieldLabelColor, fontSize: textTitles),
+                    color: registerTitleColor, fontSize: registerTitleFontSize),
               ),
               Container(
                 padding: const EdgeInsets.all(8),
@@ -100,43 +64,50 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     children: [
                       CustomTextField(
                         controller: _nameController,
-                        hintText: 'Name',
+                        hintText: 'Name must only consist of roman alphabet letters and spaces',
                         hideText: false,
+                        labelText: 'Full Name',
+                        regex: RegExp(r'^[a-zA-Z ]+$'),
                       ),
                       CustomTextField(
                         controller: _emailController,
-                        hintText: 'Email',
+                        hintText: 'Email must follow format XXX@XXX.XX',
                         hideText: false,
+                        labelText: 'Email',
+                        regex: RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$'),
                       ),
                       CustomNumberField(
                         controller: _phoneNumberController,
                         hintText: 'Phone Number',
                       ),
+                      GenderDropBox(onGenderChanged: (String? value) {
+                        _genderController.text = value!;
+                      }),
                       CustomTextField(
                         controller: _passwordController,
-                        hintText: 'Password',
+                        hintText: 'Needs 6+ characters, a capital letter & a symbol',
                         hideText: true,
+                        labelText: 'Password',
+                        regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[!@#\$&*~]).{6,}$'),
                       ),
-                      CustomTextField(
-                        controller: _confirmPasswordController,
-                        hintText: 'Confirm Password',
-                        hideText: true,
-                      ),
-                      //const Spacer(flex: 1),
                       CustomButton(
                         text: 'Register',
                         onTap: () async => {
-                          if (_signUpFormKey.currentState!.validate()) {
-                            await LoginController.signUpUser(
-                                context: context,
-                                name: _nameController.text,
-                                email: _emailController.text,
-                                phoneNumber: _phoneNumberController.text,
-                                password: _passwordController.text).then((value) => {
-                                  if(FirebaseAuth.instance.currentUser != null){
-                                    Navigator.pop(context)
-                                  }})
-                          }
+                          if (_signUpFormKey.currentState!.validate())
+                            {
+                              await LoginController.signUpUser(
+                                      context: context,
+                                      name: _nameController.text,
+                                      email: _emailController.text,
+                                      gender: _genderController.text,
+                                      phoneNumber: _phoneNumberController.text,
+                                      password: _passwordController.text)
+                                  .then((value) => {
+                                        if (FirebaseAuth.instance.currentUser !=
+                                            null)
+                                          {Navigator.pop(context)}
+                                      })
+                            }
                         },
                       )
                     ],
