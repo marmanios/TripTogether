@@ -3,6 +3,7 @@ import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import '../controllers/LoginController.dart';
 
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:gradient_widgets/gradient_widgets.dart';
@@ -17,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _signInFormKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -57,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Form(
-                  //key: _signInFormKey,
+                  key: _signInFormKey,
                   child: Column(
                     children: [
                       CustomTextField(
@@ -73,10 +75,13 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 50),
                       CustomButton(
                         text: 'Sign In',
-                        onTap: () {
-                          // if (_signInFormKey.currentState!.validate()) {
-                          //   signInUser();
-                          // }
+                        onTap: () async {
+                          if (_signInFormKey.currentState!.validate()) {
+                            await LoginController.signInUser(
+                                context: context,
+                                email: _emailController.text,
+                                password: _passwordController.text);
+                          }
                         },
                       )
                     ],

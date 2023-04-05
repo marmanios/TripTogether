@@ -5,6 +5,7 @@ import '../../common/widgets/custom_numberfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
+import '../controllers/LoginController.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final _signUpFormKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -31,35 +33,35 @@ class _RegistrationPageState extends State<RegistrationPage> {
     _confirmPasswordController.dispose();
   }
 
-  void signUpUser() {
-    final String name = _nameController.text;
-    final String email = _emailController.text;
-    final String password = _passwordController.text;
+  // void signUpUser() {
+  //   final String name = _nameController.text;
+  //   final String email = _emailController.text;
+  //   final String password = _passwordController.text;
 
-    // Save the registration data to a text file
-    final String data = '$name, $email, $password\n';
-    final File file = File('registration_data.txt');
-    file.writeAsStringSync(data, mode: FileMode.append);
+  //   // Save the registration data to a text file
+  //   final String data = '$name, $email, $password\n';
+  //   final File file = File('registration_data.txt');
+  //   file.writeAsStringSync(data, mode: FileMode.append);
 
-    // Show a dialog to confirm that the registration data was saved
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Registration complete'),
-          content: const Text('Your registration data has been saved.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //   // Show a dialog to confirm that the registration data was saved
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Registration complete'),
+  //         content: const Text('Your registration data has been saved.'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +93,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Form(
-                  //key: _signInFormKey,
+                  key: _signUpFormKey,
                   child: Column(
                     children: [
                       CustomTextField(
@@ -118,11 +120,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         hintText: 'Confirm Password',
                         hideText: true,
                       ),
-                      // const Spacer(flex: 1),
+                      //const Spacer(flex: 1),
                       CustomButton(
                         text: 'Register',
-                        onTap: () {
-                          signUpUser();
+                        onTap: () async {
+                          if (_signUpFormKey.currentState!.validate()) {
+                            await LoginController.signUpUser(
+                                context: context,
+                                name: _nameController.text,
+                                email: _emailController.text,
+                                phoneNumber: _phoneNumberController.text,
+                                password: _passwordController.text);
+                          }
                         },
                       )
                     ],
