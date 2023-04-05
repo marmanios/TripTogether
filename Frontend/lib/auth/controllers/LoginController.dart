@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginController {
+  static final db = FirebaseFirestore.instance;
+
   static SnackBar generateSnackbar({required String text}) {
     return SnackBar(content: Text(text), backgroundColor: Colors.red);
   }
@@ -21,8 +24,13 @@ class LoginController {
               child: CircularProgressIndicator(),
             ));
     try {
-      await FirebaseAuth.instance
+      UserCredential userCredentials = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      await db.collection('users').doc(userCredentials.user?.uid).set({
+        "name": name,
+        "phoneNumber":phoneNumber,
+        "rating":3
+        });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
