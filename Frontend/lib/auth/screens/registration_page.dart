@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_numberfield.dart';
@@ -123,14 +125,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       //const Spacer(flex: 1),
                       CustomButton(
                         text: 'Register',
-                        onTap: () async {
+                        onTap: () async => {
                           if (_signUpFormKey.currentState!.validate()) {
                             await LoginController.signUpUser(
                                 context: context,
                                 name: _nameController.text,
                                 email: _emailController.text,
                                 phoneNumber: _phoneNumberController.text,
-                                password: _passwordController.text);
+                                password: _passwordController.text).then((value) => {
+                                  if(FirebaseAuth.instance.currentUser != null){
+                                    Navigator.pop(context)
+                                  }})
                           }
                         },
                       )
@@ -154,11 +159,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        );
+                        Navigator.pop(context);
                       },
                     ))
                   ]),
