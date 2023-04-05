@@ -1,4 +1,0 @@
-#Sun Apr 02 23:04:46 EDT 2023
-base.0=C\:\\Users\\Ayman PC\\Desktop\\Github\\3A04\\triptogether\\Frontend\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
