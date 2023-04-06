@@ -44,6 +44,7 @@ class LoginController {
             generateSnackbar(text: "Error: Email Badly Formatted"));
       }
     }
+    // ignore: use_build_context_synchronously
     Navigator.of(context, rootNavigator: true).pop();
   }
 
@@ -76,13 +77,14 @@ class LoginController {
             .showSnackBar(generateSnackbar(text: "Error: Wrong Password"));
       }
     }
+    // ignore: use_build_context_synchronously
     Navigator.of(context, rootNavigator: true).pop();
   }
 
   // get user data
-  static Future<void> getUserData(
-    BuildContext context,
-  ) async {
-    try {} catch (e) {}
-  }
+  // static Future<void> getUserData(
+  //   BuildContext context,
+  // ) async {
+  //   try {} catch (e) {}
+  // }
 }
