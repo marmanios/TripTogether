@@ -1,16 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/offerCarpool/screens/qrCodeScanner_page.dart';
 import 'package:get/get.dart';
-
 import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_button.dart';
-import 'package:flutter/material.dart';
 import '../../common/widgets/custom_menu.dart';
+import 'package:flutter/material.dart';
 import 'auth/screens/profile_page.dart';
-// import 'package:flutterapp/offerCarpool/screens/qrCodeScanner_page.dart';
-
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:gradient_widgets/gradient_widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -102,7 +98,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const QRCodeScannerPage()),
+                        );
+                      },
                       child: const Text('Button 1'),
                     ),
                     const SizedBox(width: 16.0),

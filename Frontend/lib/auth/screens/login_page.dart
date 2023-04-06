@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     );
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
-    print(userCredential.user?.displayName);
+    //print(userCredential.user?.displayName);
   }
 
   @override
