@@ -8,7 +8,7 @@ import '../../common/widgets/custom_numberfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
-import '../controllers/LoginController.dart';
+import '../controllers/login_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistrationPage extends StatefulWidget {

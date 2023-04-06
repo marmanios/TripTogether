@@ -3,7 +3,7 @@ import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import '../controllers/LoginController.dart';
+import '../controllers/login_controller.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

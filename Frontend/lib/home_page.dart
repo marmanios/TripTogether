@@ -91,7 +91,6 @@ class _HomePageState extends State<HomePage> {
               Container(
                 decoration: const BoxDecoration(color: Colors.white),
               ),
-              const Spacer(flex: 1),
               const SizedBox(height: 10),
               Center(
                 child: Row(
@@ -115,7 +114,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              const Spacer(flex: 1),
             ])));
   }
 }

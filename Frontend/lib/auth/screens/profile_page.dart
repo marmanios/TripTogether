@@ -16,18 +16,24 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: getUserData(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          return Text('Welcome ${data['name']}');
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
+    return Scaffold(
+      body: Column(
+        children: [
+          FutureBuilder<DocumentSnapshot>(
+            future: getUserData(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                Map<String, dynamic> data =
+                    snapshot.data!.data() as Map<String, dynamic>;
+                return Text('Welcome ${data['phoneNumber']}');
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          )
+        ],
+      ),
     );
   }
 }
