@@ -8,7 +8,8 @@ import '../../common/widgets/custom_numberfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
-import '../controllers/LoginController.dart';
+import '../controllers/login_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
       TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final _signUpFormKey = GlobalKey<FormState>();
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('users');
 
   @override
   void dispose() {
@@ -64,7 +67,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     children: [
                       CustomTextField(
                         controller: _nameController,
-                        hintText: 'Name must only consist of roman alphabet letters and spaces',
+                        hintText:
+                            'Name must only consist of roman alphabet letters and spaces',
                         hideText: false,
                         labelText: 'Full Name',
                         regex: RegExp(r'^[a-zA-Z ]+$'),
@@ -85,31 +89,33 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       }),
                       CustomTextField(
                         controller: _passwordController,
-                        hintText: 'Needs 6+ characters, a capital letter & a symbol',
+                        hintText:
+                            'Needs 6+ characters, a capital letter & a symbol',
                         hideText: true,
                         labelText: 'Password',
                         regex: RegExp(r'^(?=.*?[A-Z])(?=.*?[!@#\$&*~]).{6,}$'),
                       ),
                       CustomButton(
-                        text: 'Register',
-                        onTap: () async => {
-                          if (_signUpFormKey.currentState!.validate())
-                            {
-                              await LoginController.signUpUser(
-                                      context: context,
-                                      name: _nameController.text,
-                                      email: _emailController.text,
-                                      gender: _genderController.text,
-                                      phoneNumber: _phoneNumberController.text,
-                                      password: _passwordController.text)
-                                  .then((value) => {
-                                        if (FirebaseAuth.instance.currentUser !=
-                                            null)
-                                          {Navigator.pop(context)}
-                                      })
-                            }
-                        },
-                      )
+                          text: 'Register',
+                          onTap: () async => {
+                                if (_signUpFormKey.currentState!.validate())
+                                  {
+                                    await LoginController.signUpUser(
+                                            context: context,
+                                            name: _nameController.text,
+                                            email: _emailController.text,
+                                            gender: _genderController.text,
+                                            phoneNumber:
+                                                _phoneNumberController.text,
+                                            password: _passwordController.text)
+                                        .then((value) => {
+                                              if (FirebaseAuth
+                                                      .instance.currentUser !=
+                                                  null)
+                                                {Navigator.pop(context)}
+                                            })
+                                  }
+                              }),
                     ],
                   ),
                 ),

@@ -1,5 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
-
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,11 +40,11 @@ class LoginController {
         ScaffoldMessenger.of(context)
             .showSnackBar(generateSnackbar(text: "Error: The Email Is In Use"));
       } else if (e.code == 'invalid-email') {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(generateSnackbar(text: "Error: Email Badly Formatted"));
-      
+        ScaffoldMessenger.of(context).showSnackBar(
+            generateSnackbar(text: "Error: Email Badly Formatted"));
       }
     }
+    // ignore: use_build_context_synchronously
     Navigator.of(context, rootNavigator: true).pop();
   }
 
@@ -83,9 +82,9 @@ class LoginController {
   }
 
   // get user data
-  static Future<void> getUserData(
-    BuildContext context,
-  ) async {
-    try {} catch (e) {}
-  }
+  // static Future<void> getUserData(
+  //   BuildContext context,
+  // ) async {
+  //   try {} catch (e) {}
+  // }
 }

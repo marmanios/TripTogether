@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/auth/screens/login_page.dart';
-import 'package:flutterapp/homePage.dart';
+import 'package:flutterapp/home_Page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'auth/screens/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
 // add library for getx
 
 Future<void> main() async {
