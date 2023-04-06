@@ -4,8 +4,6 @@ import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import '../controllers/login_controller.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:gradient_widgets/gradient_widgets.dart';
@@ -28,19 +26,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-  }
-
-  signInWithGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    GoogleSignInAuthentication? googleSignInAuthentication =
-        await googleUser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication?.accessToken,
-      idToken: googleSignInAuthentication?.idToken,
-    );
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    //print(userCredential.user?.displayName);
   }
 
   @override
@@ -150,15 +135,15 @@ class _LoginPageState extends State<LoginPage> {
                         height: 50,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          signInWithGoogle();
+                        onPressed: () async {
+                          await LoginController.signInWithGoogle();
                         },
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
+                          shape: const CircleBorder(),
                           backgroundColor: Colors.white,
                           shadowColor: Colors.grey,
                           elevation: 5,
-                          minimumSize: Size(70, 70),
+                          minimumSize: const Size(70, 70),
                         ),
                         child: Image.asset(
                           'assets/google.png',
@@ -179,11 +164,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
+                          shape: const CircleBorder(),
                           backgroundColor: facebookColor,
                           shadowColor: Colors.grey,
                           elevation: 5,
-                          minimumSize: Size(70, 70),
+                          minimumSize: const Size(70, 70),
                         ),
                         onPressed: () {
                           // Add your onPressed logic here

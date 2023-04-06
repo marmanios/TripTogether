@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginController {
   static final db = FirebaseFirestore.instance;
@@ -81,10 +82,14 @@ class LoginController {
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  // get user data
-  // static Future<void> getUserData(
-  //   BuildContext context,
-  // ) async {
-  //   try {} catch (e) {}
-  // }
+  static Future<void> signInWithGoogle() async {
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    GoogleSignInAuthentication? googleSignInAuthentication =
+        await googleUser?.authentication;
+    // ignore: unused_local_variable
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication?.accessToken,
+      idToken: googleSignInAuthentication?.idToken,
+    );
+  }
 }

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'auth/screens/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // add library for getx
 
@@ -31,10 +30,10 @@ class MyApp extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: ((BuildContext context, snapshot) {
               if (FirebaseAuth.instance.currentUser == null) {
-                return LoginPage();
+                return const LoginPage();
               } else {
                 //print(FirebaseAuth.instance.currentUser);
-                return HomePage();
+                return const HomePage();
               }
             })));
   }

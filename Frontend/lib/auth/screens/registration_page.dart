@@ -1,15 +1,11 @@
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../common/widgets/custom_genderdropbox.dart';
 import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_numberfield.dart';
 import '../../common/widgets/custom_button.dart';
-import 'login_page.dart';
 import 'package:flutter/material.dart';
 import '../controllers/login_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -27,8 +23,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final _signUpFormKey = GlobalKey<FormState>();
-  CollectionReference _reference =
-      FirebaseFirestore.instance.collection('users');
 
   @override
   void dispose() {

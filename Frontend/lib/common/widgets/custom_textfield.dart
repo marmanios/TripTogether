@@ -2,7 +2,6 @@
 // https://github.com/RivaanRanawat/flutter-amazon-clone-tutorial/blob/master/lib/common/widgets/custom_textfield.dart
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../constants.dart';
 
 class CustomTextField extends StatelessWidget {

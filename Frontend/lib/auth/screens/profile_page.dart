@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../constants.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 User? currentUser = _auth.currentUser;
@@ -22,8 +23,16 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Profile"),
+        backgroundColor: loginTitleColor,
+      ),
+      body: Stack(
         children: [
+          Container(
+            decoration: const BoxDecoration(color: Colors.white),
+          ),
           FutureBuilder<DocumentSnapshot>(
             future: getUserData(),
             builder: (BuildContext context,
@@ -35,12 +44,12 @@ class ProfilePage extends StatelessWidget {
                 name = data['name'];
                 isFemale = data['isFemale'];
                 rating = data['rating'];
-                return Text('Welcome $phoneNumber');
+                return Container();
               } else {
                 return const CircularProgressIndicator();
               }
             },
-          )
+          ),
         ],
       ),
     );

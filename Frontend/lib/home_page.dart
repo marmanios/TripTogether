@@ -1,10 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterapp/offerCarpool/screens/qrCodeScanner_page.dart';
+import 'package:flutterapp/offerCarpool/screens/qr_code_scanner_page.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
-import '../../common/widgets/custom_textfield.dart';
-import '../../common/widgets/custom_button.dart';
-import '../../common/widgets/custom_menu.dart';
 import 'package:flutter/material.dart';
 import 'auth/screens/profile_page.dart';
 
@@ -20,6 +17,7 @@ void _userLogout() {
 }
 
 void _viewProfile() {
+  // ignore: prefer_const_constructors
   Get.to(ProfilePage());
 }
 

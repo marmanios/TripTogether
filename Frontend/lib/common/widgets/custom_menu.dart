@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MenuButton extends StatefulWidget {
+  const MenuButton({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MenuButtonState createState() => _MenuButtonState();
 }
 
@@ -14,7 +17,7 @@ class _MenuButtonState extends State<MenuButton> {
       children: [
         if (!_showMenu)
           IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             color: Colors.black,
             onPressed: () {
               setState(() {
@@ -28,11 +31,11 @@ class _MenuButtonState extends State<MenuButton> {
             children: [
               ElevatedButton(
                 onPressed: () {},
-                child: Text('Button 1'),
+                child: const Text('Button 1'),
               ),
               ElevatedButton(
                 onPressed: () {},
-                child: Text('Button 2'),
+                child: const Text('Button 2'),
               ),
             ],
           ),
