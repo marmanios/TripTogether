@@ -4,6 +4,7 @@ import '../../constants.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/offerCarpool/screens/qrCodeScannerPage.dart';
 
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:gradient_widgets/gradient_widgets.dart';
@@ -23,6 +24,10 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {},
+          ),
+          IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
               FirebaseAuth.instance.signOut();
@@ -30,31 +35,29 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: const Text('Welcome to the Home Page'),
+      body: const Center(
+        child: Text('Welcome to the Home Page'),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(
-              icon: const Icon(Icons.home),
-              onPressed: () {
-                // Navigate to Home Page
-              },
+            ElevatedButton.icon(
+              label: const Text('Offer'),
+              icon: const Icon(Icons.camera),
+              onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => QRScannerPage()),
+                    )
             ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // Navigate to Search Page
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                // Navigate to Profile Page
-              },
+            ElevatedButton.icon(
+              label: const Text('Offer'),
+              icon: const Icon(Icons.camera),
+              onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => QRScannerPage()),
+                    )
             ),
           ],
         ),
