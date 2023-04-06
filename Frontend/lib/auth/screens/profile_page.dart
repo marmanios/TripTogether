@@ -4,6 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 User? currentUser = _auth.currentUser;
+String? phoneNumber;
+String? name;
+bool? isFemale;
+int? rating;
+
 Future<DocumentSnapshot> getUserData() async {
   return await FirebaseFirestore.instance
       .collection('users')
@@ -26,9 +31,13 @@ class ProfilePage extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 Map<String, dynamic> data =
                     snapshot.data!.data() as Map<String, dynamic>;
-                return Text('Welcome ${data['phoneNumber']}');
+                phoneNumber = data['phoneNumber'];
+                name = data['name'];
+                isFemale = data['isFemale'];
+                rating = data['rating'];
+                return Text('Welcome $phoneNumber');
               } else {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
             },
           )
