@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterapp/auth/screens/login_page.dart';
 import 'package:flutterapp/home_Page.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  SystemChrome.setEnabledSystemUIOverlays([]);
   runApp(const MyApp());
 }
 
