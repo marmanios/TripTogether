@@ -44,6 +44,8 @@ class OfferCarpoolController {
         "offererID": offererID,
         "maxPassengers": maxPassengers,
         "taxiID": taxiID,
+        "fare": fare,
+        "isFemaleOnly": isFemaleOnly,
         "destination": {
           "ID": destinationLocationID,
           "formattedAddress": destinationData!.formattedAddress!,
@@ -56,7 +58,7 @@ class OfferCarpoolController {
             "destinationCity": startData.city!
           }
         ],
-        "fare": fare
+        
       });
     } catch (e) {}
     //ignore: use_build_context_synchronously
