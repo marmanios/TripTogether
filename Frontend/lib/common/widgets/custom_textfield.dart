@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     required this.labelText,
     required this.regex,
     this.maxLines = 1,
+    onPress
   }) : super(key: key);
 
   @override
