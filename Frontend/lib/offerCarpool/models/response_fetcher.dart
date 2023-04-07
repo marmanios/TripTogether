@@ -1,3 +1,4 @@
+import 'package:flutterapp/constants.dart';
 import 'package:http/http.dart' as http;
 
 class PlacesFetcher {
@@ -7,7 +8,7 @@ class PlacesFetcher {
         "maps.googleapis.com",
         'maps/api/place/autocomplete/json',
         {"input": query, 
-        "key": "AIzaSyDbvsJq206FO6dDArKF6hfsF9UuTwyFcD4",
+        "key": APIkey,
         "region": "ca"
         
         });

@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
               if (FirebaseAuth.instance.currentUser == null) {
                 return const LoginPage();
               } else {
-                //print(FirebaseAuth.instance.currentUser);
                 return const HomePage();
               }
             })));

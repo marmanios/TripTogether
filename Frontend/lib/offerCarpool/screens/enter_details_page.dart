@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/common/widgets/custom_button.dart';
 import 'package:flutterapp/common/widgets/location_list_tile.dart';
+import 'package:flutterapp/offerCarpool/controllers/offer_carpool_controller.dart';
 import 'package:flutterapp/offerCarpool/models/response_fetcher.dart';
 import '../../constants.dart';
 import '../models/place_auto_complete_response.dart';
@@ -15,7 +16,6 @@ String? phoneNumber;
 String? name;
 bool? isFemale;
 int? rating;
-
 
 class EnterDetailsPage extends StatefulWidget {
   final String taxiID;
@@ -34,6 +34,9 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
   final TextEditingController _startSearchFieldController =
       TextEditingController();
   final TextEditingController _destinationSearchFieldController =
+      TextEditingController();
+  final TextEditingController _startPlaceIDController = TextEditingController();
+  final TextEditingController _destinationPlaceIDController =
       TextEditingController();
   bool _isFemaleController = false;
 
@@ -65,8 +68,7 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
             const Text(
               "Enter Ride Details",
               style: TextStyle(
-                  color: registerTitleColor,
-                  fontSize: loginTitleFontSize),
+                  color: registerTitleColor, fontSize: loginTitleFontSize),
             ),
             Text(
               'TaxiID: $taxiID',
@@ -95,7 +97,7 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
             TextField(
               style: const TextStyle(color: registerTitleColor),
               controller: _startSearchFieldController,
-              onChanged: (value) => {placeAutocomplete(value,true)},
+              onChanged: (value) => {placeAutocomplete(value, true)},
               showCursor: false,
               decoration: const InputDecoration(
                   labelText: 'Pickup Location',
@@ -116,11 +118,12 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
                               press: _onSelectStart,
                               location:
                                   startPlacePredictions[index].description!,
+                              placeID: startPlacePredictions[index].placeID!,
                             ))),
             TextField(
               style: const TextStyle(color: registerTitleColor),
               showCursor: false,
-              onChanged: (value) => {placeAutocomplete(value,false)},
+              onChanged: (value) => {placeAutocomplete(value, false)},
               controller: _destinationSearchFieldController,
               decoration: const InputDecoration(
                   labelText: 'Destination Location',
@@ -141,6 +144,8 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
                               press: _onSelectDestination,
                               location: destinationPlacePredictions[index]
                                   .description!,
+                              placeID:
+                                  destinationPlacePredictions[index].placeID!,
                             ))),
             FutureBuilder<DocumentSnapshot>(
                 future: getUserData(),
@@ -173,7 +178,17 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
               flex: 1,
             ),
             CustomButton(
-              onTap: () => {},
+              onTap: () async {
+                await OfferCarpoolController.submitOffer(
+                 context: context,
+                 offererID: FirebaseAuth.instance.currentUser!.uid,
+                 maxPassengers: int.parse(_maxPassengersController.text),
+                 startLocationID: _startPlaceIDController.text,
+                 destinationLocationID: _destinationPlaceIDController.text,
+                 taxiID: taxiID,
+                 isFemaleOnly: _isFemaleController
+                );
+              },
               text: "Submit Offer",
               color: buttonColor,
             )
@@ -198,25 +213,29 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
           PlaceAutocompleteResponse.parseAutocompleteResult(response);
       if (result.predictions != null) {
         setState(() {
-          if (start){startPlacePredictions = result.predictions!;}
-          else{destinationPlacePredictions = result.predictions!;}
-          
+          if (start) {
+            startPlacePredictions = result.predictions!;
+          } else {
+            destinationPlacePredictions = result.predictions!;
+          }
         });
       }
     }
   }
 
-  void _onSelectStart(String newValue) {
+  void _onSelectStart(String location, String placeID) {
     setState(() {
-      _startSearchFieldController.text = newValue;
+      _startSearchFieldController.text = location;
       startPlacePredictions = [];
+      _startPlaceIDController.text = placeID;
     });
   }
 
-  void _onSelectDestination(String newValue) {
+  void _onSelectDestination(String location, String placeID) {
     setState(() {
-      _destinationSearchFieldController.text = newValue;
+      _destinationSearchFieldController.text = location;
       destinationPlacePredictions = [];
+      _destinationPlaceIDController.text = placeID;
     });
   }
 
