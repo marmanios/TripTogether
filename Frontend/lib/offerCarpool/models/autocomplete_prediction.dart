@@ -1,3 +1,6 @@
+// Code inspired from "Location Search Autocomplete in Flutter | Speed code"
+// Found @ https://www.youtube.com/watch?v=3CO8pGw7fzY
+
 class AutocompletePrediction {
   final String? description;
   final String? placeID;

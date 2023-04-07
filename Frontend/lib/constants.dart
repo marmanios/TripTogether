@@ -29,3 +29,7 @@ const googleGradient = LinearGradient(
     Color.fromARGB(255, 52, 168, 83), // Green
   ],
 );
+
+const APIkey = "AIzaSyDbvsJq206FO6dDArKF6hfsF9UuTwyFcD4";
+const taxiRatePerKm = 3.00;
+const taxiFlatRate = 2.40;
