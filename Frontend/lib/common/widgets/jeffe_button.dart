@@ -4,33 +4,38 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
-class CustomButton extends StatelessWidget {
+class JeffeButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
-  final Color? color;
-  const CustomButton({
-    Key? key,
-    required this.text,
-    required this.onTap,
-    this.color,
-  }) : super(key: key);
+  final Color buttoncolor;
+  final double size;
+  final Color textColor;
+  const JeffeButton(
+      {Key? key,
+      required this.text,
+      required this.onTap,
+      required this.buttoncolor,
+      required this.size,
+      required this.textColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: double.infinity,
+        width: size,
         alignment: Alignment.center,
         padding: const EdgeInsets.all(kDefaultPadding), // 15
-        decoration: const BoxDecoration(
-          color: buttonColor,
+        decoration: BoxDecoration(
+          color: buttoncolor,
           borderRadius: BorderRadius.all(Radius.circular(6)),
         ),
         child: Text(
           text,
-          style: const TextStyle(
-              color: buttonTextColor,
+          style: TextStyle(
+              // old one was buttonTextColor
+              color: textColor,
               fontWeight: FontWeight.bold,
               fontSize: buttonTextSize),
         ),
