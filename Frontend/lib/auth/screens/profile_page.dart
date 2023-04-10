@@ -114,7 +114,7 @@ class ProfilePage extends StatelessWidget {
                           const Spacer(flex: 95),
                           ProfilePageButton(
                             text: "Link Spotify",
-                            onTap: () => {Get.to(Home())},
+                            onTap: () => {Get.to(const Home())},
                             buttoncolor: Colors.green,
                             textColor: Colors.black,
                             size: 270,

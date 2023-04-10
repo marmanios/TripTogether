@@ -16,13 +16,10 @@ class SizedIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Icon(
-          icon,
-          color: Colors.white,
-          size: 24.0,
-        ),
+      height: width,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Icon(icon),
       ),
     );
   }

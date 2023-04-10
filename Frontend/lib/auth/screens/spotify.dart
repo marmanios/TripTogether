@@ -11,7 +11,9 @@ import 'package:spotify_sdk/models/player_context.dart';
 import 'package:spotify_sdk/models/player_state.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
-import '../../common/widgets/custom_SizedIconButton.dart';
+import '../../common/widgets/custom_sized_icon_button.dart';
+
+// import 'package:sized_icon_button/sized_icon_button.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
@@ -59,7 +61,7 @@ class _HomeState extends State<Home> {
           }
           return Scaffold(
             appBar: AppBar(
-              title: const Text('SpotifySdk Example'),
+              title: const Text('Spotify Linker'),
               actions: [
                 _connected
                     ? IconButton(
@@ -142,7 +144,7 @@ class _HomeState extends State<Home> {
                 ),
                 TextButton(
                   onPressed: getAccessToken,
-                  child: const Text('get auth token '),
+                  child: const Text('Retrive Auth Token '),
                 ),
               ],
             ),
@@ -424,7 +426,8 @@ class _HomeState extends State<Home> {
       });
       var result = await SpotifySdk.connectToSpotifyRemote(
           clientId: dotenv.env['9b37272204704c33a867566943aa6b0f'].toString(),
-          redirectUrl: dotenv.env['REDIRECT_URL'].toString());
+          redirectUrl:
+              dotenv.env['WHAT SHOULD I PUT HERE WAAAAAAAAA'].toString());
       setStatus(result
           ? 'connect to spotify successful'
           : 'connect to spotify failed');
@@ -448,7 +451,7 @@ class _HomeState extends State<Home> {
     try {
       var authenticationToken = await SpotifySdk.getAccessToken(
           clientId: dotenv.env['9b37272204704c33a867566943aa6b0f'].toString(),
-          redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
+          redirectUrl: dotenv.env['myapp://callback'].toString(),
           scope: 'app-remote-control, '
               'user-modify-playback-state, '
               'playlist-read-private, '

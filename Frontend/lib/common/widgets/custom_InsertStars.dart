@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutterapp/common/widgets/custom_button.dart';
-import 'package:flutterapp/common/widgets/custom_profilepage_button.dart';
 import '../../constants.dart';
 
 class InsertStars extends StatelessWidget {
