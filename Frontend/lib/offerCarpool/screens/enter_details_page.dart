@@ -176,17 +176,15 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
                     return const CircularProgressIndicator();
                   }
                 }),
-            const Spacer(
-              flex: 1,
-            ),
             CustomButton(
               onTap: (_startPlaceIDController.text == "" ||
-                      _destinationPlaceIDController.text == "" || _maxPassengersController.text == "")
+                      _destinationPlaceIDController.text == "" ||
+                      _maxPassengersController.text == "")
                   ? () => {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Please Enter Two Destinations & a passengers count"),
-                                backgroundColor: Colors.red))
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                "Please Enter Two Destinations & a passengers count"),
+                            backgroundColor: Colors.red))
                       }
                   : () async {
                       await OfferCarpoolController.submitOffer(
@@ -199,7 +197,7 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
                               _destinationPlaceIDController.text,
                           taxiID: taxiID,
                           isFemaleOnly: _isFemaleController);
-                      Get.to(const ActiveCarpoolPage());
+                      Get.to(ActiveCarpoolPage());
                     },
               text: "Submit Offer",
               color: buttonColor,

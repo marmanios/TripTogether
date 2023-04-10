@@ -1,50 +1,30 @@
 import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterapp/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 String? _carpoolID;
 String? _offererID;
-String? _maxPassengers;
-String? _taxiID;
-String? _fare;
-Map<String, dynamic>? _destination;
-Map<String, dynamic>? _stops;
-Map<String, dynamic>? _passengers;
 
 class ActiveCarpoolController {
-  static void setData(
-      {required carpoolID,
-      required offererID,
-      required maxPassengers,
-      required taxiID,
-      required fare,
-      required destination,
-      required stops,
-      required passengers}) {
+  static final db = FirebaseFirestore.instance;
+
+  static void setData({
+    required carpoolID,
+    required offererID,
+  }) {
     _carpoolID = carpoolID;
     _offererID = offererID;
-    _maxPassengers = maxPassengers;
-    _taxiID = taxiID;
-    _fare = fare;
-    _destination = destination;
-    _stops = stops;
-    _passengers = passengers;
   }
 
-  static Set<Object?> getData() {
-    return ({
-      _carpoolID,
-      _offererID,
-      _maxPassengers,
-      _taxiID,
-      _fare,
-      _destination,
-      _stops,
-      _passengers,
-    });
+  static Future<Map<String, dynamic>?> getCarpoolData() async {
+    final snapshot = await db.collection('offers').doc(_carpoolID).get();
+    final userData = snapshot.data();
+    return userData;
   }
+
+  static void findRequests(String uid) {}
 
   static void acceptRequest(String uid) {
     //update DB

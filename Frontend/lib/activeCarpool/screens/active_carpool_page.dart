@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/activeCarpool/controllers/active_carpool_controller.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,6 +15,9 @@ class ActiveCarpoolPage extends StatefulWidget {
 class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
   final Map<String, Marker> _markers = {};
   late GoogleMapController mapController;
+  late Map<String, dynamic>? carpoolData;
+  late Map<String, dynamic>? passengerData;
+
   LatLng? _currentPosition;
   bool _isLoading = true;
   String _mapStyle = "";
@@ -24,11 +28,19 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
     rootBundle
         .loadString('assets/map_style.txt')
         .then((string) => _mapStyle = string);
-    getLocation();
+    _getLocation();
+    _getCarpoolData();
   }
 
-  void getLocation() async {
-    LocationPermission permission = await Geolocator.requestPermission();
+  void _getCarpoolData() async {
+    Map<String, dynamic>? data = await ActiveCarpoolController.getCarpoolData();
+    print(data);
+    setState(() {
+      this.carpoolData = data;
+    });
+  }
+
+  void _getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     double lat = position.latitude;
@@ -37,20 +49,20 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
     LatLng location = LatLng(lat, long);
 
     setState(() {
-      _currentPosition = location;
-      _isLoading = false;
+      this._currentPosition = location;
+      this._isLoading = false;
     });
   }
 
+  void _getPassengerData() async {}
+
   @override
   Widget build(BuildContext context) {
-    print(ActiveCarpoolController.getData().toString());
-    Set<Object?> data = ActiveCarpoolController.getData();
     return WillPopScope(
         child: MaterialApp(
           home: Scaffold(
             appBar: AppBar(
-              title: Text(ActiveCarpoolController.getData().toString()),
+              title: const Text("Active Carpool"),
               elevation: 1,
             ),
             body: Column(
@@ -74,7 +86,25 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                     markers: _markers.values.toSet(),
                   ),
                 ),
-                Text(ActiveCarpoolController.getData().toString())
+                carpoolData == null
+                    ? Container()
+                    : Column(children: [
+                        Row(
+                          children: [Text(carpoolData!['fare'].toString())],
+                        ),
+                        Row(
+                          children: const [Text("Passengers")],
+                        ),
+                        Row(
+                          children: const [Text("Passengers")],
+                        ),
+                        Row(
+                          children: const [Text("Passengers")],
+                        )
+                      ])
+                // FutureBuilder<void>(
+                //   future: ActiveCarpoolController.getCarpoolData(),
+                // )
               ],
             ),
           ),

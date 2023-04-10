@@ -19,11 +19,6 @@ class LoginController {
     required String phoneNumber,
     required String gender,
   }) async {
-    showDialog(
-        context: context,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
     try {
       UserCredential userCredentials = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -45,8 +40,6 @@ class LoginController {
             generateSnackbar(text: "Error: Email Badly Formatted"));
       }
     }
-    // ignore: use_build_context_synchronously
-    Navigator.of(context, rootNavigator: true).pop();
   }
 
   // sign in user

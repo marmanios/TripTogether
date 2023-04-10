@@ -60,26 +60,10 @@ class OfferCarpoolController {
             "destinationCity": startData.city!
           }
         ],
-        "passengers": []
+        "passengers": [offererID]
       });
 
-      ActiveCarpoolController.setData(
-          carpoolID: doc.id,
-          offererID: offererID,
-          maxPassengers: maxPassengers,
-          taxiID: taxiID,
-          fare: fare,
-          destination: {
-            "ID": destinationLocationID,
-            "formattedAddress": destinationData.formattedAddress!,
-            "destinationCity": destinationData.city!
-          },
-          stops: {
-            "ID": startLocationID,
-            "formattedAddress": startData.formattedAddress!,
-            "destinationCity": startData.city!
-          },
-          passengers: []);
+      ActiveCarpoolController.setData(carpoolID: doc.id, offererID: offererID);
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool("inCarpool", true);
@@ -118,20 +102,19 @@ Future<PlaceData?> getPlaceData(String placeId) async {
 Future<double> getFare(PlaceData? placeOne, PlaceData? placeTwo) async {
   String origin = placeOne!.formattedAddress!;
   String destination = placeTwo!.formattedAddress!;
-  Uri uri = Uri.https(
-        "maps.googleapis.com",
-        'maps/api/distancematrix/json',
-        {"units": "metric",
-        "origins": origin,
-        "destinations": destination,
-        "key": APIkey,
-        
-        });
+  Uri uri = Uri.https("maps.googleapis.com", 'maps/api/distancematrix/json', {
+    "units": "metric",
+    "origins": origin,
+    "destinations": destination,
+    "key": APIkey,
+  });
   final response = await http.get(uri);
-  
+
   Map<String, dynamic> data = jsonDecode(response.body);
   int distance = data['rows'][0]['elements'][0]['distance']['value'];
   double distanceInKm = distance / 1000.0;
 
-  return distanceInKm * taxiRatePerKm + taxiFlatRate;
+  // Rounds to 2 decimal places by turning to string first
+  return double.parse(
+      ((distanceInKm * taxiRatePerKm + taxiFlatRate)).toStringAsFixed(2));
 }
