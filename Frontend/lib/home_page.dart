@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterapp/common/widgets/custom_home_button.dart';
 import 'package:flutterapp/offerCarpool/screens/qr_code_scanner_page.dart';
 import 'package:flutterapp/requestCarpool/screens/request_carpool_page.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
 import 'package:flutter/material.dart';
 import 'auth/screens/profile_page.dart';
+import 'package:flutterapp/common/widgets/custom_profilepage_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,12 +25,6 @@ void _viewProfile() {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    Geolocator.requestPermission();
-  }
-
   @override
   Widget build(BuildContext context) {
     // MaterialApp  with debugShowCheckedModeBanner
@@ -94,34 +89,57 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             body: Stack(children: [
+              const SizedBox(height: 20),
               Container(
                 decoration: const BoxDecoration(color: Colors.white),
               ),
-              const SizedBox(height: 10),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   mainAxisSize: MainAxisSize.min,
+              //   children: const [
+              //     SizedBox(height: 20),
+              //     Text(
+              //       "Welcome",
+              //       style: TextStyle(color: registerTitleColor, fontSize: 40),
+              //     ),
+              //   ],
+              // ),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
+                    HomeButton(
+                      text: "Offer Carpool",
+                      //onTap: () => {},
+                      buttoncolor: Color.fromARGB(90, 230, 230, 230),
+                      textColor: Colors.black,
+                      width: 180,
+                      height: 200,
+                      image: 'assets/car.png',
+                      onTap: () => {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const QRCodeScannerPage()),
-                        );
+                        ),
                       },
-                      child: const Text('Offer Carpool'),
                     ),
                     const SizedBox(width: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
+                    HomeButton(
+                      text: "Request Carpool",
+                      //onTap: () => {},
+                      buttoncolor: Color.fromARGB(90, 230, 230, 230),
+                      textColor: Colors.black,
+                      width: 180,
+                      height: 200,
+                      image: 'assets/vintageCar.png',
+                      onTap: () => {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const RequestCarpoolPage()),
-                        );
+                        ),
                       },
-                      child: const Text('Request Carpool'),
                     ),
                   ],
                 ),
