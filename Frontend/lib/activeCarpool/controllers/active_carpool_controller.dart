@@ -33,8 +33,7 @@ class ActiveCarpoolController {
   }
   static void stringDeclineRequest(String uid) {}
 
-  static void getLatLng(String uid) {
-    Future<LatLng?> getPlaceData(String placeId) async {
+  static Future<LatLng?> getLatLng(String placeId) async {
       Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json',
           {"place_id": placeId, "key": APIkey});
 
@@ -49,6 +48,5 @@ class ActiveCarpoolController {
       } catch (e) {
         return null;
       }
-    }
   }
 }

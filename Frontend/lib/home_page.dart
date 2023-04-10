@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/common/widgets/custom_home_button.dart';
 import 'package:flutterapp/offerCarpool/screens/qr_code_scanner_page.dart';
 import 'package:flutterapp/requestCarpool/screens/request_carpool_page.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,12 @@ void _viewProfile() {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    Geolocator.requestPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     // MaterialApp  with debugShowCheckedModeBanner
