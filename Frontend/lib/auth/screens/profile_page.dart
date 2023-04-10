@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutterapp/common/widgets/jeffe_button.dart';
+import 'package:flutterapp/common/widgets/custom_profilepage_button.dart';
+import 'package:get/get.dart';
 import '../../constants.dart';
 import '../controllers/user_profile_controller.dart';
 import '../../common/widgets/custom_insertStars.dart';
+import 'spotify.dart';
 
 // User? currentUser = _auth.currentUser;
 String? phoneNumber;
 String? name;
 bool? isFemale;
 int? rating;
+
+void _openSpotify() {
+  // ignore: prefer_const_constructors
+  Get.to(Home());
+}
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -105,9 +112,9 @@ class ProfilePage extends StatelessWidget {
 
                           //Buttons ---------------------------------------------------------------------------------------
                           const Spacer(flex: 95),
-                          JeffeButton(
+                          ProfilePageButton(
                             text: "Link Spotify",
-                            onTap: () => {},
+                            onTap: () => {Get.to(Home())},
                             buttoncolor: Colors.green,
                             textColor: Colors.black,
                             size: 270,
@@ -115,7 +122,7 @@ class ProfilePage extends StatelessWidget {
                           const Spacer(flex: 3),
                           Row(
                             children: [
-                              JeffeButton(
+                              ProfilePageButton(
                                 text: "Delete Account",
                                 onTap: () => {},
                                 buttoncolor: Colors.red,
@@ -123,7 +130,7 @@ class ProfilePage extends StatelessWidget {
                                 size: 200,
                               ),
                               const Spacer(flex: 5),
-                              JeffeButton(
+                              ProfilePageButton(
                                 text: "Edit Account",
                                 onTap: () => {},
                                 buttoncolor: buttonColor,

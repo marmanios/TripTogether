@@ -4,13 +4,13 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
-class JeffeButton extends StatelessWidget {
+class ProfilePageButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final Color buttoncolor;
   final double size;
   final Color textColor;
-  const JeffeButton(
+  const ProfilePageButton(
       {Key? key,
       required this.text,
       required this.onTap,
