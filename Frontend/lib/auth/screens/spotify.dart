@@ -10,15 +10,7 @@ import 'package:spotify_sdk/models/image_uri.dart';
 import 'package:spotify_sdk/models/player_context.dart';
 import 'package:spotify_sdk/models/player_state.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
-
 import '../../common/widgets/custom_sized_icon_button.dart';
-
-// import 'package:sized_icon_button/sized_icon_button.dart';
-
-Future<void> main() async {
-  await dotenv.load(fileName: '.env');
-  runApp(const Home());
-}
 
 /// A [StatefulWidget] which uses:
 /// * [spotify_sdk](https://pub.dev/packages/spotify_sdk)
@@ -426,8 +418,7 @@ class _HomeState extends State<Home> {
       });
       var result = await SpotifySdk.connectToSpotifyRemote(
           clientId: dotenv.env['9b37272204704c33a867566943aa6b0f'].toString(),
-          redirectUrl:
-              dotenv.env['WHAT SHOULD I PUT HERE WAAAAAAAAA'].toString());
+          redirectUrl: dotenv.env['triptogether://callback'].toString());
       setStatus(result
           ? 'connect to spotify successful'
           : 'connect to spotify failed');
@@ -451,7 +442,7 @@ class _HomeState extends State<Home> {
     try {
       var authenticationToken = await SpotifySdk.getAccessToken(
           clientId: dotenv.env['9b37272204704c33a867566943aa6b0f'].toString(),
-          redirectUrl: dotenv.env['myapp://callback'].toString(),
+          redirectUrl: dotenv.env['triptogether://callback'].toString(),
           scope: 'app-remote-control, '
               'user-modify-playback-state, '
               'playlist-read-private, '
