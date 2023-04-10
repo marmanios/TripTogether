@@ -48,6 +48,8 @@ dependencies:
   google_maps_flutter: ^2.2.5
   flutter_google_places_sdk: ^0.3.2+6
   google_maps: ^6.2.0
+  shared_preferences: ^2.1.0
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

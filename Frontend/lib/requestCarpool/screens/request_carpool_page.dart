@@ -10,8 +10,8 @@ import 'package:flutterapp/offerCarpool/controllers/offer_carpool_controller.dar
 import 'package:flutterapp/offerCarpool/models/response_fetcher.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
-import '../models/place_auto_complete_response.dart';
-import '../models/autocomplete_prediction.dart';
+import '../../offerCarpool/models/autocomplete_prediction.dart';
+import '../../offerCarpool/models/place_auto_complete_response.dart';
 
 User? currentUser = FirebaseAuth.instance.currentUser;
 String? phoneNumber;
@@ -19,19 +19,16 @@ String? name;
 bool? isFemale;
 int? rating;
 
-class EnterDetailsPage extends StatefulWidget {
-  final String taxiID;
-  const EnterDetailsPage({Key? key, required this.taxiID}) : super(key: key);
+class RequestCarpoolPage extends StatefulWidget {
+  const RequestCarpoolPage({Key? key}) : super(key: key);
 
   @override
-  State<EnterDetailsPage> createState() =>
-      // ignore: no_logic_in_create_state
-      _EnterDetailsPageState(taxiID: taxiID);
+  State<RequestCarpoolPage> createState() =>
+      _RequestCarpoolPageState();
 }
 
-class _EnterDetailsPageState extends State<EnterDetailsPage> {
-  final String taxiID;
-  final TextEditingController _maxPassengersController =
+class _RequestCarpoolPageState extends State<RequestCarpoolPage> {
+  final TextEditingController _numPassengersController =
       TextEditingController();
   final TextEditingController _startSearchFieldController =
       TextEditingController();
@@ -45,7 +42,7 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
   List<AutocompletePrediction> startPlacePredictions = [];
   List<AutocompletePrediction> destinationPlacePredictions = [];
 
-  _EnterDetailsPageState({required this.taxiID});
+  _RequestCarpoolPageState();
 
   @override
   void dispose() {
@@ -72,23 +69,16 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
               style: TextStyle(
                   color: registerTitleColor, fontSize: loginTitleFontSize),
             ),
-            Text(
-              'TaxiID: $taxiID',
-              style: const TextStyle(
-                  color: registerTitleColor,
-                  // fontWeight: FontWeight.bold,
-                  fontSize: kTextFieldLabelSize),
-            ),
             TextField(
               style: const TextStyle(color: registerTitleColor),
-              controller: _maxPassengersController,
+              controller: _numPassengersController,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(r'[1-9]{1}')),
               ],
               keyboardType: TextInputType.number,
               showCursor: false,
               decoration: const InputDecoration(
-                  labelText: 'Max Passengers',
+                  labelText: '# Of Passengers',
                   labelStyle: TextStyle(
                       color: kTextFieldLabelColor,
                       fontSize: kTextFieldLabelSize),
@@ -181,25 +171,26 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
             ),
             CustomButton(
               onTap: (_startPlaceIDController.text == "" ||
-                      _destinationPlaceIDController.text == "" || _maxPassengersController.text == "")
+                      _destinationPlaceIDController.text == "" ||
+                      _numPassengersController.text == "")
                   ? () => {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Please Enter Two Destinations & a passengers count"),
-                                backgroundColor: Colors.red))
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                "Please Enter Two Destinations & a passengers count"),
+                            backgroundColor: Colors.red))
                       }
                   : () async {
-                      await OfferCarpoolController.submitOffer(
-                          context: context,
-                          offererID: FirebaseAuth.instance.currentUser!.uid,
-                          maxPassengers:
-                              int.parse(_maxPassengersController.text),
-                          startLocationID: _startPlaceIDController.text,
-                          destinationLocationID:
-                              _destinationPlaceIDController.text,
-                          taxiID: taxiID,
-                          isFemaleOnly: _isFemaleController);
-                      Get.to(const ActiveCarpoolPage());
+                      // await OfferCarpoolController.submitOffer(
+                      //     context: context,
+                      //     offererID: FirebaseAuth.instance.currentUser!.uid,
+                      //     maxPassengers:
+                      //         int.parse(_numPassengersController.text),
+                      //     startLocationID: _startPlaceIDController.text,
+                      //     destinationLocationID:
+                      //         _destinationPlaceIDController.text,
+                      //     taxiID: taxiID,
+                      //     isFemaleOnly: _isFemaleController);
+                      // Get.to(const ActiveCarpoolPage());
                     },
               text: "Submit Offer",
               color: buttonColor,
