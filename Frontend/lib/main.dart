@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    bool inCarpool = prefs.getBool("inCarpool") ?? false; 
+    bool inCarpool = prefs.getBool("inCarpool") ?? false;
     return GetMaterialApp(
         title: 'TripTogether',
         debugShowCheckedModeBanner: false,
