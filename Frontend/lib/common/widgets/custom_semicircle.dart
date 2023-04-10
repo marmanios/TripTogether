@@ -5,8 +5,8 @@ class CustomSemiCircle extends StatelessWidget implements PreferredSizeWidget {
   final double width;
   final Color color;
 
-  CustomSemiCircle(
-      {required this.height, required this.width, required this.color});
+  const CustomSemiCircle(
+      {super.key, required this.height, required this.width, required this.color});
 
   @override
   Widget build(BuildContext context) {

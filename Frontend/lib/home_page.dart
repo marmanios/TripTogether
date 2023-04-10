@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/offerCarpool/screens/qr_code_scanner_page.dart';
+import 'package:flutterapp/requestCarpool/screens/request_carpool_page.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
 import 'package:flutter/material.dart';
@@ -102,12 +103,18 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => const QRCodeScannerPage()),
                         );
                       },
-                      child: const Text('Button 1'),
+                      child: const Text('Offer Carpool'),
                     ),
                     const SizedBox(width: 16.0),
                     ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Button 2'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RequestCarpoolPage()),
+                        );
+                      },
+                      child: const Text('Request Carpool'),
                     ),
                   ],
                 ),

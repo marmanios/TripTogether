@@ -108,7 +108,18 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
                               _controller!.resumeCamera();
                             })
                           }
-                      : null,
+                      : () => { //REPLACE TO NULL IN PRODUCTION
+                            _controller!.pauseCamera(),
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder:
+                                        (BuildContext routeContextcontext) =>
+                                            const EnterDetailsPage(
+                                                taxiID: "123")))
+                                .then((value) {
+                              _controller!.resumeCamera();
+                            })
+                          },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(10),
                     backgroundColor: buttonColor,
