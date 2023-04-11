@@ -3,33 +3,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterapp/activeCarpool/screens/active_carpool_page.dart';
 import 'package:flutterapp/common/widgets/custom_button.dart';
 import 'package:flutterapp/common/widgets/location_list_tile.dart';
-import 'package:flutterapp/offerCarpool/controllers/offer_carpool_controller.dart';
 import 'package:flutterapp/offerCarpool/models/response_fetcher.dart';
+import 'package:flutterapp/requestCarpool/controllers/request_carpool_controller.dart';
+import 'package:flutterapp/requestCarpool/screens/available_offers_page.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
 import '../../offerCarpool/models/autocomplete_prediction.dart';
 import '../../offerCarpool/models/place_auto_complete_response.dart';
 
 User? currentUser = FirebaseAuth.instance.currentUser;
-String? phoneNumber;
-String? name;
-bool? isFemale;
-int? rating;
 
 class RequestCarpoolPage extends StatefulWidget {
   const RequestCarpoolPage({Key? key}) : super(key: key);
 
   @override
-  State<RequestCarpoolPage> createState() =>
-      _RequestCarpoolPageState();
+  State<RequestCarpoolPage> createState() => _RequestCarpoolPageState();
 }
 
 class _RequestCarpoolPageState extends State<RequestCarpoolPage> {
-  final TextEditingController _numPassengersController =
-      TextEditingController();
   final TextEditingController _startSearchFieldController =
       TextEditingController();
   final TextEditingController _destinationSearchFieldController =
@@ -68,23 +61,6 @@ class _RequestCarpoolPageState extends State<RequestCarpoolPage> {
               "Enter Ride Details",
               style: TextStyle(
                   color: registerTitleColor, fontSize: loginTitleFontSize),
-            ),
-            TextField(
-              style: const TextStyle(color: registerTitleColor),
-              controller: _numPassengersController,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[1-9]{1}')),
-              ],
-              keyboardType: TextInputType.number,
-              showCursor: false,
-              decoration: const InputDecoration(
-                  labelText: '# Of Passengers',
-                  labelStyle: TextStyle(
-                      color: kTextFieldLabelColor,
-                      fontSize: kTextFieldLabelSize),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kTextFieldLine),
-                  )),
             ),
             TextField(
               style: const TextStyle(color: registerTitleColor),
@@ -166,13 +142,9 @@ class _RequestCarpoolPageState extends State<RequestCarpoolPage> {
                     return const CircularProgressIndicator();
                   }
                 }),
-            const Spacer(
-              flex: 1,
-            ),
             CustomButton(
               onTap: (_startPlaceIDController.text == "" ||
-                      _destinationPlaceIDController.text == "" ||
-                      _numPassengersController.text == "")
+                      _destinationPlaceIDController.text == "")
                   ? () => {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                             content: Text(
@@ -180,19 +152,18 @@ class _RequestCarpoolPageState extends State<RequestCarpoolPage> {
                             backgroundColor: Colors.red))
                       }
                   : () async {
-                      // await OfferCarpoolController.submitOffer(
-                      //     context: context,
-                      //     offererID: FirebaseAuth.instance.currentUser!.uid,
-                      //     maxPassengers:
-                      //         int.parse(_numPassengersController.text),
-                      //     startLocationID: _startPlaceIDController.text,
-                      //     destinationLocationID:
-                      //         _destinationPlaceIDController.text,
-                      //     taxiID: taxiID,
-                      //     isFemaleOnly: _isFemaleController);
-                      // Get.to(const ActiveCarpoolPage());
+                      final offers =
+                          await RequestCarpoolController.getOfferList(
+                              context: context,
+                              destinationLocationID:
+                                  _destinationPlaceIDController.text,
+                              isFemaleOnly: _isFemaleController);
+                      //print(offers);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext routeContextcontext) =>
+                              AvailableOffersPage(offers: offers)));
                     },
-              text: "Submit Offer",
+              text: "Submit Request",
               color: buttonColor,
             )
           ],

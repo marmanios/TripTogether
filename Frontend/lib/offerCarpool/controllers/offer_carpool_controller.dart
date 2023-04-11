@@ -54,11 +54,11 @@ class OfferCarpoolController {
           "destinationCity": destinationData.city!
         },
         "stops": [
-          {
-            "ID": startLocationID,
-            "formattedAddress": startData!.formattedAddress!,
-            "destinationCity": startData.city!
-          }
+          // {
+          //   "ID": startLocationID,
+          //   "formattedAddress": startData!.formattedAddress!,
+          //   "destinationCity": startData.city!
+          // }
         ],
         "passengers": [offererID]
       });

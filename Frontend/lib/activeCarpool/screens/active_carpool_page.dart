@@ -9,7 +9,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../../common/widgets/custom_home_button.dart';
 
 class ActiveCarpoolPage extends StatefulWidget {
-  const ActiveCarpoolPage({super.key});
+  const ActiveCarpoolPage({Key? key}):super(key: key);
 
   @override
   State<ActiveCarpoolPage> createState() => _ActiveCarpoolPageState();

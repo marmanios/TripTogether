@@ -83,12 +83,12 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
               style: const TextStyle(color: registerTitleColor),
               controller: _maxPassengersController,
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[1-9]{1}')),
+                FilteringTextInputFormatter.allow(RegExp(r'^[1-7]?$')),
               ],
               keyboardType: TextInputType.number,
               showCursor: false,
               decoration: const InputDecoration(
-                  labelText: 'Max Passengers',
+                  labelText: 'Max Passengers (1-7)',
                   labelStyle: TextStyle(
                       color: kTextFieldLabelColor,
                       fontSize: kTextFieldLabelSize),
