@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/requestCarpool/widgets/offer_details_modal.dart';
 
 import '../../constants.dart';
 
@@ -79,14 +80,12 @@ class AvailableOffersPage extends StatelessWidget {
                                     topRight: Radius.circular(20),
                                   ),
                                 ),
-                                child: Column(
-                                  children: [Text(offers[index].data().toString())],
-                                ),
+                                child: OfferDetailsModal(offerDetails:offers[index].data(),),
                               ),
                             );
                           },
                         ),
-                        trailing: Icon(Icons.menu),
+                        trailing: const Icon(Icons.menu),
                       ));
                 },
               )
