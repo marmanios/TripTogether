@@ -316,8 +316,15 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                         height: 60,
                         image: 'assets/cancel.png',
                         onTap: () => {
-                              ActiveCarpoolController.openDisplayFarePage(
-                                  context)
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DisplayFarePage(
+                                      fare: carpoolData!["fare"] /
+                                          passengerDetails.length,
+                                      passengers: passengerDetails),
+                                ),
+                              )
                             }),
                   ],
                 ),

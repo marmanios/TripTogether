@@ -91,23 +91,23 @@ class ActiveCarpoolController {
     }
   }
 
-  static void openDisplayFarePage(BuildContext context) {
-    // ignore: prefer_const_constructors
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const DisplayFarePage(),
-      ),
-    );
-  }
-
-  // static void openRatePassengerPage(BuildContext context) {
+  // static void openDisplayFarePage(BuildContext context, double fare, List<Map<String, dynamic>> passengers) {
   //   // ignore: prefer_const_constructors
   //   Navigator.push(
   //     context,
   //     MaterialPageRoute(
-  //       builder: (context) => const SpotifyPage(),
+  //       builder: (context) => const DisplayFarePage(fare:fare, passengers:passengers),
   //     ),
   //   );
   // }
+
+  // // static void openRatePassengerPage(BuildContext context) {
+  // //   // ignore: prefer_const_constructors
+  // //   Navigator.push(
+  // //     context,
+  // //     MaterialPageRoute(
+  // //       builder: (context) => const SpotifyPage(),
+  // //     ),
+  // //   );
+  // // }
 }

@@ -31,203 +31,210 @@ class RatePassengersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Rate Passengers Page'),
-          backgroundColor: loginTitleColor,
-        ),
-        body: Stack(
-          children: [
-            FutureBuilder<DocumentSnapshot>(
-                future: getUserData(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    phoneNumber = data['phoneNumber'];
-                    name = data['name'];
-                    rating = data['rating'];
-                    var _saveRating;
-                    return Stack(
-                      children: [
-                        Container(
-                            decoration:
-                                const BoxDecoration(color: Colors.white)),
-                        Column(
-                          children: [
-                            const SizedBox(height: 15),
-                            // Align(
-                            //   alignment: Alignment.topCenter,
-                            //   child: Text(
-                            //     'Rate Fellow Passengers',
-                            //     style: TextStyle(
-                            //         color: loginTitleColor, fontSize: 30),
-                            //   ),
-                            // ),
-                            SizedBox(height: 10),
-                            //Start
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text('Rate Passengers Page'),
+            backgroundColor: loginTitleColor,
+          ),
+          body: Stack(
+            children: [
+              FutureBuilder<DocumentSnapshot>(
+                  future: getUserData(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      Map<String, dynamic> data =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      phoneNumber = data['phoneNumber'];
+                      name = data['name'];
+                      rating = data['rating'];
+                      var _saveRating;
+                      return Stack(
+                        children: [
+                          Container(
+                              decoration:
+                                  const BoxDecoration(color: Colors.white)),
+                          Column(
+                            children: [
+                              const SizedBox(height: 15),
+                              // Align(
+                              //   alignment: Alignment.topCenter,
+                              //   child: Text(
+                              //     'Rate Fellow Passengers',
+                              //     style: TextStyle(
+                              //         color: loginTitleColor, fontSize: 30),
+                              //   ),
+                              // ),
+                              SizedBox(height: 10),
+                              //Start
 
-                            SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      minWidth:
-                                          MediaQuery.of(context).size.width),
-                                  child: Container(
-                                    height: 450,
-                                    //color: Color.fromARGB(255, 255, 255, 255),
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "Passengers:",
-                                          style: TextStyle(
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
+                              SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        minWidth:
+                                            MediaQuery.of(context).size.width),
+                                    child: Container(
+                                      height: 450,
+                                      //color: Color.fromARGB(255, 255, 255, 255),
+                                      alignment: Alignment.center,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            "Passengers:",
+                                            style: TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          //color: Color.fromARGB(
-                                          //255, 255, 255, 255),
-                                          child: Column(children: [
-                                            Column(
-                                              children: [
-                                                for (var passenger
-                                                    in passengers)
-                                                  // if (FirebaseAuth.instance.currentUser.)
-                                                  Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const Icon(
-                                                            Icons
-                                                                .account_circle_outlined,
-                                                            color: Colors.black,
-                                                            size: 30,
-                                                          ),
-                                                          Text(
-                                                            passenger[
-                                                                "name"], //Placeholder name ---------------------------------------------------------------------------------------------------------------
-                                                            style: TextStyle(
-                                                              fontSize: 15,
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            //color: Color.fromARGB(
+                                            //255, 255, 255, 255),
+                                            child: Column(children: [
+                                              Column(
+                                                children: [
+                                                  for (var passenger
+                                                      in passengers)
+                                                    // if (FirebaseAuth.instance.currentUser.)
+                                                    Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                              Icons
+                                                                  .account_circle_outlined,
                                                               color:
                                                                   Colors.black,
+                                                              size: 30,
                                                             ),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          RatingBar.builder(
-                                                            initialRating: 3,
-                                                            minRating: 1,
-                                                            direction:
-                                                                Axis.horizontal,
-                                                            allowHalfRating:
-                                                                true,
-                                                            itemCount: 5,
-                                                            itemPadding: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        4.0),
-                                                            itemBuilder:
-                                                                (context, _) =>
-                                                                    Icon(
-                                                              Icons.star,
-                                                              color:
-                                                                  Colors.amber,
+                                                            Text(
+                                                              passenger[
+                                                                  "name"], //Placeholder name ---------------------------------------------------------------------------------------------------------------
+                                                              style: TextStyle(
+                                                                fontSize: 15,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                             ),
-                                                            onRatingUpdate:
-                                                                (rating) {
-                                                              print(rating);
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Container(
-                                                        height: 60,
-                                                        color: Color.fromARGB(
-                                                            255, 177, 177, 177),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: TextField(
-                                                          decoration: InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(),
-                                                              hintText:
-                                                                  'Enter Comment'),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            RatingBar.builder(
+                                                              initialRating: 3,
+                                                              minRating: 1,
+                                                              direction: Axis
+                                                                  .horizontal,
+                                                              allowHalfRating:
+                                                                  true,
+                                                              itemCount: 5,
+                                                              itemPadding: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          4.0),
+                                                              itemBuilder:
+                                                                  (context,
+                                                                          _) =>
+                                                                      Icon(
+                                                                Icons.star,
+                                                                color: Colors
+                                                                    .amber,
+                                                              ),
+                                                              onRatingUpdate:
+                                                                  (rating) {
+                                                                print(rating);
+                                                              },
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      SizedBox(height: 20),
-                                                    ],
-                                                  ),
-                                              ],
-                                            ),
-                                          ]),
-                                        ),
-                                      ],
+                                                        Container(
+                                                          height: 60,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              177,
+                                                              177,
+                                                              177),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: TextField(
+                                                            decoration: InputDecoration(
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                                hintText:
+                                                                    'Enter Comment'),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 20),
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                            ]),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )),
+                                  )),
 
-                            //end
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ActiveButton(
-                                  text: "Submit Ratings",
-                                  textSize: 15,
-                                  newIcon: Icons.arrow_circle_right,
-                                  buttoncolor: buttonColor,
-                                  textColor:
-                                      const Color.fromARGB(255, 255, 255, 255),
-                                  width: 250,
-                                  height: 60,
-                                  image: 'assets/star.png',
-                                  onTap: () =>
-                                      {Get.to(HomePage())},
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ActiveButton(
-                                  text: "Skip Ratings",
-                                  textSize: 15,
-                                  newIcon: Icons.arrow_circle_right,
-                                  buttoncolor:
-                                      Color.fromARGB(255, 125, 125, 125),
-                                  textColor:
-                                      const Color.fromARGB(255, 255, 255, 255),
-                                  width: 250,
-                                  height: 60,
-                                  image: "assets/star.png",
-                                  onTap: () =>
-                                      {Get.to(HomePage())},
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        // Spacer(flex: 10),
-                      ],
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                })
-          ],
-        ));
+                              //end
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ActiveButton(
+                                    text: "Submit Ratings",
+                                    textSize: 15,
+                                    newIcon: Icons.arrow_circle_right,
+                                    buttoncolor: buttonColor,
+                                    textColor: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    width: 250,
+                                    height: 60,
+                                    image: 'assets/star.png',
+                                    onTap: () => {Navigator.popUntil(context, (route) => route.isFirst)},
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  ActiveButton(
+                                    text: "Skip Ratings",
+                                    textSize: 15,
+                                    newIcon: Icons.arrow_circle_right,
+                                    buttoncolor:
+                                        Color.fromARGB(255, 125, 125, 125),
+                                    textColor: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    width: 250,
+                                    height: 60,
+                                    image: "assets/star.png",
+                                    onTap: () => {Navigator.popUntil(context, (route) => route.isFirst)},
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          // Spacer(flex: 10),
+                        ],
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  })
+            ],
+          )),
+    );
   }
 }
