@@ -1,4 +1,6 @@
 // ignore: file_names
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
@@ -37,9 +39,18 @@ class RequestCarpoolController {
   }
 
   static Future<void> submitRequest(String offerID) async {
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref('/requests/${offerID}');
+    await ref.set({FirebaseAuth.instance.currentUser!.uid.toString(): false});
     print(offerID);
   }
-  static Future<void> cancelRequest(String request) async {}
+
+  static Future<void> cancelRequest(String offerID) async {
+    DatabaseReference ref = FirebaseDatabase.instance
+        .ref('/requests/${offerID}/${FirebaseAuth.instance.currentUser!.uid}');
+    await ref.remove();
+    //print(offerID);
+  }
 
   static Future<String?> getCityName(String placeId) async {
     Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json',

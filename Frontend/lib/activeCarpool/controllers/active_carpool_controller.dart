@@ -18,6 +18,10 @@ class ActiveCarpoolController {
     _offererID = offererID;
   }
 
+  static String getCarpoolID() {
+    return _carpoolID!;
+  }
+
   static Future<Map<String, dynamic>?> getCarpoolData() async {
     final snapshot = await db.collection('offers').doc(_carpoolID).get();
     final userData = snapshot.data();
@@ -34,19 +38,19 @@ class ActiveCarpoolController {
   static void stringDeclineRequest(String uid) {}
 
   static Future<LatLng?> getLatLng(String placeId) async {
-      Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json',
-          {"place_id": placeId, "key": APIkey});
+    Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json',
+        {"place_id": placeId, "key": APIkey});
 
-      try {
-        final response = await http.get(uri);
-        if (response.statusCode == 200) {
-          final Map<String, dynamic> data = json.decode(response.body);
-          final Map<String, dynamic> location =
-              data['result']['geometry']['location'];
-          return LatLng(location['lat'], location['lng']);
-        }
-      } catch (e) {
-        return null;
+    try {
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        final Map<String, dynamic> location =
+            data['result']['geometry']['location'];
+        return LatLng(location['lat'], location['lng']);
       }
+    } catch (e) {
+      return null;
+    }
   }
 }

@@ -1,13 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutterapp/activeCarpool/controllers/active_carpool_controller.dart';
 import 'package:flutterapp/common/widgets/custom_activepage_button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'dart:math';
-import '../../common/widgets/custom_home_button.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ActiveCarpoolPage extends StatefulWidget {
   const ActiveCarpoolPage({Key? key}) : super(key: key);
@@ -21,10 +18,11 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
   late GoogleMapController mapController;
   late Map<String, dynamic>? carpoolData;
   late Map<String, dynamic>? passengerData;
+  final DatabaseReference db = FirebaseDatabase.instance
+      .ref("activeCarpools/${ActiveCarpoolController.getCarpoolID()}");
   final double fontSize = 20;
 
   LatLng? _currentPosition;
-  bool _isLoading = true;
   String _mapStyle = "";
 
   @override
@@ -35,6 +33,12 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
         .then((string) => _mapStyle = string);
     _getLocation();
     _getCarpoolData();
+    _createDbInstance();
+  }
+
+  void _createDbInstance() async {
+    print("Set");
+    await db.set({"requests": []});
   }
 
   void _getCarpoolData() async {
@@ -55,11 +59,8 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
 
     setState(() {
       this._currentPosition = location;
-      this._isLoading = false;
     });
   }
-
-  void _getPassengerData() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +73,6 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
             ),
             body: Column(
               children: [
-                // Text(
-                //   //Destination Text -----------------------------------------------------------------------------------------------------------
-                //   "Destination: ",
-                //   style: TextStyle(
-                //     fontSize: 20,
-                //   ),
-                // ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 4 / 10,
                   child: GoogleMap(
@@ -104,7 +98,8 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                     : SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width),
+                          constraints: BoxConstraints(
+                              minWidth: MediaQuery.of(context).size.width),
                           child: Container(
                             height: 100,
                             color: const Color.fromARGB(255, 202, 217, 225),
@@ -129,7 +124,6 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                                   child: Column(children: [
                                     Row(
                                       children: [
-                    
                                         Row(
                                           children: [
                                             const Icon(
@@ -149,7 +143,6 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                                         ),
                                       ],
                                     ),
-
                                   ]),
                                 ),
                               ],
@@ -191,7 +184,8 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Flexible(child: Text(
+                        Flexible(
+                            child: Text(
                           carpoolData!["destination"]["formattedAddress"],
                           style: TextStyle(fontSize: 20),
                         ))

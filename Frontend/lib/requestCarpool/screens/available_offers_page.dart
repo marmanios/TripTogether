@@ -68,7 +68,9 @@ class _AvailableOffersPageState extends State<AvailableOffersPage> {
                           style: const TextStyle(color: Colors.blue),
                         ),
                         subtitle: Text(
-                          "Fare: ${offers[index].data()["fare"] / (offers[index].data()["passengers"].length + 2)}",
+                          "Fare: ${
+                            (offers[index].data()["fare"]/(offers[index].data()["passengers"].length + 1)).toStringAsFixed(2)
+                            }",
                           style: const TextStyle(color: Colors.blue),
                         ),
                         onTap: () => {

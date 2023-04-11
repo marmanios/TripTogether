@@ -417,8 +417,9 @@ class _HomeState extends State<Home> {
         _loading = true;
       });
       var result = await SpotifySdk.connectToSpotifyRemote(
-          clientId: dotenv.env['9b37272204704c33a867566943aa6b0f'].toString(),
-          redirectUrl: dotenv.env['triptogether://callback'].toString());
+        clientId: dotenv.env['CLIENT_ID'].toString(),
+        redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
+      );
       setStatus(result
           ? 'connect to spotify successful'
           : 'connect to spotify failed');
@@ -441,8 +442,8 @@ class _HomeState extends State<Home> {
   Future<String> getAccessToken() async {
     try {
       var authenticationToken = await SpotifySdk.getAccessToken(
-          clientId: dotenv.env['9b37272204704c33a867566943aa6b0f'].toString(),
-          redirectUrl: dotenv.env['triptogether://callback'].toString(),
+          clientId: dotenv.env['CLIENT_ID'].toString(),
+          redirectUrl: dotenv.env['REDIRECT_URL'].toString(),
           scope: 'app-remote-control, '
               'user-modify-playback-state, '
               'playlist-read-private, '
