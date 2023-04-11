@@ -88,7 +88,7 @@ class IncomingRequestPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                'New Fare: placeholderfare',
+                                'New Fare: \$15.97',
                                 style: TextStyle(
                                     color: loginTitleColor, fontSize: 18),
                               ),
