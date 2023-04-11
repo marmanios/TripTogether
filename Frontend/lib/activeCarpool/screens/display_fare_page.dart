@@ -28,7 +28,7 @@ class DisplayFarePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Arrived at Destination'),
+          title: const Text('Fare Page'),
           backgroundColor: loginTitleColor,
         ),
         body: Stack(
@@ -50,44 +50,51 @@ class DisplayFarePage extends StatelessWidget {
                                 const BoxDecoration(color: Colors.white)),
                         Column(
                           children: [
-                            const SizedBox(height: 100),
+                            const SizedBox(height: 75),
                             Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                'Thank you for carpooling \n with us at TripTogether!',
+                                'Desination \n Reached!',
                                 style: TextStyle(
-                                    color: loginTitleColor, fontSize: 34),
+                                    color: loginTitleColor, fontSize: 40),
                               ),
                             ),
-                            Spacer(flex: 5),
+                            SizedBox(height: 75),
                             Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                'Fare: fareplaceholder',
+                                'Fare Summary',
                                 style: TextStyle(
+                                    color: Colors.black, 
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 25),
+                            Container(
+                              color: Colors.grey,
+                              width: 300,
+                              height: 150,
+                              child: Center(
+                                child: Text(
+                                  'Subtotal: \$subtotalplaceholder \n \n Tax: \$taxplaceholder \n \n Total: \$totalplaceholder',
+                                  style: TextStyle(
                                     color: Colors.black, fontSize: 18),
+                                ),
                               ),
                             ),
-                            Spacer(flex: 25),
+                            SizedBox(height: 50),
                                 ProfilePageButton(
                                   text: "Rate Passengers",
                                   onTap: () => {},
-                                  size: 400,
+                                  size: 200,
                                   buttoncolor: loginTitleColor,
                                   textColor: Colors.white,
                                 ),
-                                Spacer(flex: 4),
-                                ProfilePageButton(
-                                  text: "Skip",
-                                  onTap: () => {},
-                                  size: 150,
-                                  buttoncolor: loginTitleColor,
-                                  textColor: Colors.white,
-                                ),
-                                Spacer(flex: 4),
                               ],
                             ),
-                            Spacer(flex: 10),
+                            // Spacer(flex: 10),
                           ],
                     );
                   } else {
