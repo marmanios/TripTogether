@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/activeCarpool/screens/active_carpool_page.dart';
+import 'package:flutterapp/activeCarpool/screens/incoming_request_page.dart';
 import 'package:flutterapp/auth/screens/login_page.dart';
+import 'package:flutterapp/auth/screens/spotify.dart';
 import 'package:flutterapp/home_Page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
