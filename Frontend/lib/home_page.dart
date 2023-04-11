@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                       textColor: Colors.black,
                       width: 180,
                       height: 200,
-                      image: 'assets/car.png',
+                      image: 'assets/redcar.png',
                       onTap: () => {
                         Navigator.push(
                           context,
@@ -139,13 +139,13 @@ class _HomePageState extends State<HomePage> {
                       textColor: Colors.black,
                       width: 180,
                       height: 200,
-                      image: 'assets/vintageCar.png',
+                      image: 'assets/bluecar.png',
                       onTap: () => {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RequestCarpoolPage(),
-                              ),
+                            builder: (context) => const RequestCarpoolPage(),
+                          ),
                         ),
                       },
                     ),
