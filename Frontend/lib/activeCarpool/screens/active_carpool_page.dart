@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import '../../auth/controllers/user_profile_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:firebase_database/firebase_database.dart';
+import 'display_fare_page.dart';
 
 class ActiveCarpoolPage extends StatefulWidget {
   const ActiveCarpoolPage({Key? key}) : super(key: key);
@@ -80,9 +81,9 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
   }
 
   void _updateActiveCarpool(String newPassengerID) async {
-    double _newFare = double.parse(
-        (carpoolData!["fare"] / (carpoolData!["passengers"].length + 1))
-            .toStringAsFixed(2));
+    // double _newFare = double.parse(
+    //     (carpoolData!["fare"] / (carpoolData!["passengers"].length + 1))
+    //         .toStringAsFixed(2));
     final _passengerSnapshot = await FirebaseFirestore.instance
         .collection('users')
         .doc(newPassengerID)
@@ -90,7 +91,7 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
     final _passengerDetails = _passengerSnapshot.data();
     setState(() {
       carpoolData!["passengers"].add(newPassengerID);
-      carpoolData!["fare"] = _newFare;
+      //carpoolData!["fare"] = _newFare;
       passengerDetails.add(_passengerDetails!);
     });
   }
@@ -255,7 +256,7 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                         ),
                         Text(
                           //Fare Text -----------------------------------------------------------------------------------------------------------
-                          "\$${carpoolData!['fare']}",
+                          "\$${carpoolData!['fare'] / carpoolData!["passengers"].length}",
                           style: TextStyle(
                             fontSize: fontSize,
                           ),
@@ -297,21 +298,26 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                       width: 250,
                       height: 60,
                       image: 'assets/spotify.png',
-                      onTap: () => {},
+                      onTap: () => {UserProfileController.openSpotify()},
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 5,
                     ),
                     ActiveButton(
-                      text: "Cancel",
+                      text: "End Carpool",
                       textSize: 15,
                       newIcon: Icons.arrow_circle_left,
                       buttoncolor: const Color.fromARGB(255, 179, 1, 1),
                       textColor: const Color.fromARGB(255, 255, 255, 255),
-                      width: 180,
+                      width: 250,
                       height: 60,
                       image: 'assets/cancel.png',
-                      onTap: () => {},
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DisplayFarePage()))
+                      },
                     ),
                   ],
                 ),
