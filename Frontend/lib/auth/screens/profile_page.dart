@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterapp/common/widgets/custom_profilepage_button.dart';
@@ -5,18 +7,12 @@ import 'package:get/get.dart';
 import '../../constants.dart';
 import '../controllers/user_profile_controller.dart';
 import '../../common/widgets/custom_insertStars.dart';
-import 'spotify.dart';
 
 // User? currentUser = _auth.currentUser;
 String? phoneNumber;
 String? name;
 bool? isFemale;
 int? rating;
-
-void _openSpotify() {
-  // ignore: prefer_const_constructors
-  Get.to(Home());
-}
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -28,8 +24,8 @@ class ProfilePage extends StatelessWidget {
         child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: const Text("Profile"),
               backgroundColor: loginTitleColor,
+              title: const Text("Profile"),
             ),
             body: Stack(children: [
               FutureBuilder<DocumentSnapshot>(
@@ -45,7 +41,12 @@ class ProfilePage extends StatelessWidget {
                       rating = data['rating'];
                       return Stack(children: [
                         Container(
-                          decoration: const BoxDecoration(color: Colors.white),
+                          decoration: const BoxDecoration(
+                              // image: DecorationImage(
+                              //   image: AssetImage(
+                              //       "assets/profilepagebackground.png"),
+                              // ),
+                              gradient: SweepGradient(colors: Colors.accents)),
                         ),
                         Column(children: [
                           const SizedBox(height: 50),
@@ -56,20 +57,22 @@ class ProfilePage extends StatelessWidget {
                               width: 100,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: loginTitleColor,
+                                  color: Colors.black,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.blueGrey,
+                                      color: Colors.black,
                                       spreadRadius: 2,
                                       blurRadius: 5,
                                       offset: Offset(0, 3),
                                     )
                                   ]),
                               margin: const EdgeInsets.only(bottom: 10),
-                              child: const Icon(
-                                Icons.person,
-                                size: 75,
-                                color: Colors.white,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.asset(
+                                  'assets/walterWhite.jpg',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
@@ -79,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                             child: Text(
                               "$name",
                               style: const TextStyle(
-                                  color: loginTitleColor,
+                                  color: Colors.black,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -91,7 +94,7 @@ class ProfilePage extends StatelessWidget {
                             child: Text(
                               "Number: $phoneNumber",
                               style: const TextStyle(
-                                  color: loginTitleColor, fontSize: 15),
+                                  color: Colors.black, fontSize: 15),
                             ),
                           ),
                           const Spacer(flex: 5),
@@ -101,7 +104,7 @@ class ProfilePage extends StatelessWidget {
                           //   child: Text(
                           //     "Average Rating: $rating",
                           //     style: const TextStyle(
-                          //         color: loginTitleColor, fontSize: 20),
+                          //         color: Colors.black, fontSize: 20),
                           //   ),
                           // ),
                           const Spacer(flex: 1),
@@ -114,31 +117,48 @@ class ProfilePage extends StatelessWidget {
                           const Spacer(flex: 95),
                           ProfilePageButton(
                             text: "Link Spotify",
-                            onTap: () => {Get.to(const Home())},
+                            onTap: () => {UserProfileController.openSpotify()},
                             buttoncolor: Colors.green,
                             textColor: Colors.black,
-                            size: 270,
+                            size: 250,
                           ),
                           const Spacer(flex: 3),
-                          Row(
-                            children: [
-                              ProfilePageButton(
-                                text: "Delete Account",
-                                onTap: () => {},
-                                buttoncolor: Colors.red,
-                                textColor: Colors.white,
-                                size: 200,
-                              ),
-                              const Spacer(flex: 5),
-                              ProfilePageButton(
-                                text: "Edit Account",
-                                onTap: () => {},
-                                buttoncolor: buttonColor,
-                                textColor: Colors.white,
-                                size: 200,
-                              ),
-                            ],
+
+                          ProfilePageButton(
+                            text: "Delete Account",
+                            onTap: () async {
+                              bool confirmed = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text("Delete Account?"),
+                                    content: const Text(
+                                        "Are you sure you want to delete your account? This cannot be undone."),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text("Cancel"),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                      ),
+                                      TextButton(
+                                        child: const Text("Delete"),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(true),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              if (confirmed == true) {
+                                UserProfileController.deleteAccount();
+                              }
+                            },
+                            buttoncolor: Colors.red,
+                            textColor: Colors.black,
+                            size: 250,
                           ),
+                          const Spacer(flex: 5),
+
                           const Spacer(flex: 25),
                         ]),
                       ]);
