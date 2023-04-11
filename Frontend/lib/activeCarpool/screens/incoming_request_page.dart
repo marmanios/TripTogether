@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/common/widgets/custom_button.dart';
 import 'package:flutterapp/common/widgets/custom_profilepage_button.dart';
+import '../../common/widgets/custom_InsertStars.dart';
 import '../../constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,7 +60,9 @@ class IncomingRequestPage extends StatelessWidget {
                               child: Text(
                                 'Passenger Name: $name',
                                 style: TextStyle(
-                                    color: loginTitleColor, fontSize: 24),
+                                    color: loginTitleColor,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             Spacer(flex: 2),
@@ -73,18 +76,19 @@ class IncomingRequestPage extends StatelessWidget {
                             ),
                             Spacer(flex: 2),
                             Align(
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                'Passenger Rating: $rating Stars',
-                                style: TextStyle(
-                                    color: loginTitleColor, fontSize: 18),
-                              ),
-                            ),
+                                alignment: Alignment.topCenter,
+                                child: InsertStars(numStars: rating!)
+                                // Text(
+                                //   'Passenger Rating: $rating Stars',
+                                //   style: TextStyle(
+                                //       color: loginTitleColor, fontSize: 18),
+                                // ),
+                                ),
                             Spacer(flex: 2),
                             Align(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                'New Fare: placeholderfare',
+                                'New Fare: \$15.97',
                                 style: TextStyle(
                                     color: loginTitleColor, fontSize: 18),
                               ),
