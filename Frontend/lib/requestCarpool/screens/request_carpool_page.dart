@@ -160,6 +160,8 @@ class _RequestCarpoolPageState extends State<RequestCarpoolPage> {
                               isFemaleOnly: _isFemaleController);
                       //print(offers);
                       Navigator.of(context).push(MaterialPageRoute(
+                          settings:
+                              const RouteSettings(name: 'RequestCarpoolPage'),
                           builder: (BuildContext routeContextcontext) =>
                               AvailableOffersPage(offers: offers)));
                     },

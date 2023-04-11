@@ -78,7 +78,7 @@ class _OfferDetailsModalState extends State<OfferDetailsModal> {
                   textAlign: TextAlign.center,
                 ))),
         const SizedBox(
-          height: 25, // <-- SEE HERE
+          height: 25, 
         ),
         Title(
             color: buttonColor,
@@ -110,7 +110,8 @@ class _OfferDetailsModalState extends State<OfferDetailsModal> {
                             style: const TextStyle(fontSize: 20),
                           ),
                           Center(
-                            child: InsertStars(numStars:  passengerDetails[index]["rating"]),
+                            child: InsertStars(
+                                numStars: passengerDetails[index]["rating"]),
                           ),
                         ]),
                       ),

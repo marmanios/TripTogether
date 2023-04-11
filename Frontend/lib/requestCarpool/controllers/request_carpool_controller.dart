@@ -39,17 +39,16 @@ class RequestCarpoolController {
   }
 
   static Future<void> submitRequest(String offerID) async {
+    print("update");
     DatabaseReference ref =
         FirebaseDatabase.instance.ref('/requests/${offerID}');
     await ref.set({FirebaseAuth.instance.currentUser!.uid.toString(): false});
-    print(offerID);
   }
 
   static Future<void> cancelRequest(String offerID) async {
     DatabaseReference ref = FirebaseDatabase.instance
         .ref('/requests/${offerID}/${FirebaseAuth.instance.currentUser!.uid}');
     await ref.remove();
-    //print(offerID);
   }
 
   static Future<String?> getCityName(String placeId) async {

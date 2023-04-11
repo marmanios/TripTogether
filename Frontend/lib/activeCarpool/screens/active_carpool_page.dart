@@ -1,5 +1,11 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/activeCarpool/controllers/active_carpool_controller.dart';
+import 'package:flutterapp/activeCarpool/screens/incoming_request_page.dart';
+import 'package:flutterapp/common/widgets/custom_InsertStars.dart';
 import 'package:flutterapp/common/widgets/custom_activepage_button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,11 +22,15 @@ class ActiveCarpoolPage extends StatefulWidget {
 class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
   final Map<String, Marker> _markers = {};
   late GoogleMapController mapController;
-  late Map<String, dynamic>? carpoolData;
-  late Map<String, dynamic>? passengerData;
-  final DatabaseReference db = FirebaseDatabase.instance
-      .ref("activeCarpools/${ActiveCarpoolController.getCarpoolID()}");
+  Map<String, dynamic>? carpoolData;
+  Map<String, dynamic>? requestPassengerData;
+  List<Map<String, dynamic>> passengerDetails = [];
+  final carpoolID = ActiveCarpoolController.getCarpoolID();
+  final DatabaseReference requestRef = FirebaseDatabase.instance
+      .ref("requests/${ActiveCarpoolController.getCarpoolID()}");
   final double fontSize = 20;
+
+  int counter = 0;
 
   LatLng? _currentPosition;
   String _mapStyle = "";
@@ -33,19 +43,26 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
         .then((string) => _mapStyle = string);
     _getLocation();
     _getCarpoolData();
-    _createDbInstance();
-  }
-
-  void _createDbInstance() async {
-    print("Set");
-    await db.set({"requests": []});
+    requestRef.onChildAdded
+        .listen((DatabaseEvent event) => {_displayRequest(event)});
   }
 
   void _getCarpoolData() async {
     Map<String, dynamic>? data = await ActiveCarpoolController.getCarpoolData();
+    List<Map<String, dynamic>> _passengerDetails = [];
+    for (var element in data!["passengers"]) {
+      final passengerSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(element)
+          .get();
+
+      final passengerDetails = passengerSnapshot.data();
+      _passengerDetails.add(passengerDetails!);
+    }
     //print(data);
     setState(() {
-      this.carpoolData = data;
+      passengerDetails = _passengerDetails;
+      carpoolData = data;
     });
   }
 
@@ -60,6 +77,78 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
     setState(() {
       this._currentPosition = location;
     });
+  }
+
+  void _updateActiveCarpool(String newPassengerID) async {
+    double _newFare = double.parse(
+        (carpoolData!["fare"] / (carpoolData!["passengers"].length + 1))
+            .toStringAsFixed(2));
+    final _passengerSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(newPassengerID)
+        .get();
+    final _passengerDetails = _passengerSnapshot.data();
+    setState(() {
+      carpoolData!["passengers"].add(newPassengerID);
+      carpoolData!["fare"] = _newFare;
+      passengerDetails.add(_passengerDetails!);
+    });
+  }
+
+  void _displayRequest(DatabaseEvent event) async {
+    if (carpoolData!["offererID"] != FirebaseAuth.instance.currentUser!.uid) {
+      return null;
+    }
+    final passengerSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(event.snapshot.key)
+        .get();
+    final requestPassengerData = passengerSnapshot.data();
+
+    // ignore: use_build_context_synchronously
+    showDialog(
+        context: context,
+        builder: (_) => WillPopScope(
+            child: AlertDialog(
+              title: const Text("Request Received!"),
+              content: SizedBox(
+                height: 150,
+                child: Column(children: [
+                  Text(
+                    requestPassengerData!["name"],
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child:
+                        InsertStars(numStars: requestPassengerData!["rating"]),
+                  ),
+                ]),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () async => {
+                          Navigator.of(context).pop(),
+                          await ActiveCarpoolController.acceptRequest(
+                              carpoolID, event.snapshot.key!),
+                          _updateActiveCarpool(event.snapshot.key!)
+                        },
+                    child: const Text("Accept Request")),
+                TextButton(
+                    onPressed: () => {
+                          Navigator.of(context).pop(),
+                          ActiveCarpoolController.declineRequest(
+                              carpoolID, event.snapshot.key!)
+                        },
+                    child: const Text("Deny Request"))
+              ],
+            ),
+            onWillPop: () async {
+              return false;
+            }),
+        barrierDismissible: false);
   }
 
   @override
@@ -124,23 +213,25 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                                   child: Column(children: [
                                     Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.account_circle_outlined,
-                                              size: 30,
-                                            ),
-                                            Text(
-                                              "John Smith", //Placeholder name ---------------------------------------------------------------------------------------------------------------
-                                              style: TextStyle(
-                                                fontSize: fontSize,
+                                        for (var passenger in passengerDetails)
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.account_circle_outlined,
+                                                size: 30,
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              width: 120,
-                                            ),
-                                          ],
-                                        ),
+                                              Text(
+                                                passenger[
+                                                    "name"], //Placeholder name ---------------------------------------------------------------------------------------------------------------
+                                                style: TextStyle(
+                                                  fontSize: fontSize,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 120,
+                                              ),
+                                            ],
+                                          ),
                                       ],
                                     ),
                                   ]),
@@ -149,7 +240,6 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                             ),
                           ),
                         )),
-
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,12 +255,12 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                         ),
                         Text(
                           //Fare Text -----------------------------------------------------------------------------------------------------------
-                          "\$" + carpoolData!['fare'].toString(),
+                          "\$${carpoolData!['fare']}",
                           style: TextStyle(
                             fontSize: fontSize,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                       ],
@@ -193,7 +283,7 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Column(
@@ -202,22 +292,22 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                       text: "TuneTogether",
                       textSize: 15,
                       newIcon: Icons.arrow_circle_right,
-                      buttoncolor: Color.fromARGB(255, 1, 64, 17),
-                      textColor: Color.fromARGB(255, 255, 255, 255),
+                      buttoncolor: const Color.fromARGB(255, 1, 64, 17),
+                      textColor: const Color.fromARGB(255, 255, 255, 255),
                       width: 250,
                       height: 60,
                       image: 'assets/spotify.png',
                       onTap: () => {},
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     ActiveButton(
                       text: "Cancel",
                       textSize: 15,
                       newIcon: Icons.arrow_circle_left,
-                      buttoncolor: Color.fromARGB(255, 179, 1, 1),
-                      textColor: Color.fromARGB(255, 255, 255, 255),
+                      buttoncolor: const Color.fromARGB(255, 179, 1, 1),
+                      textColor: const Color.fromARGB(255, 255, 255, 255),
                       width: 180,
                       height: 60,
                       image: 'assets/cancel.png',
@@ -225,9 +315,6 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                     ),
                   ],
                 ),
-                // FutureBuilder<void>(
-                //   future: ActiveCarpoolController.getCarpoolData(),
-                // )
               ],
             ),
           ),

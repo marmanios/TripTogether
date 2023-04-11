@@ -197,7 +197,12 @@ class _EnterDetailsPageState extends State<EnterDetailsPage> {
                               _destinationPlaceIDController.text,
                           taxiID: taxiID,
                           isFemaleOnly: _isFemaleController);
-                      Get.to(ActiveCarpoolPage());
+                          Navigator.of(context).push(MaterialPageRoute(
+                          settings:
+                              const RouteSettings(name: 'ActiveCarpoolPage'),
+                          builder: (BuildContext routeContextcontext) => const
+                              ActiveCarpoolPage()));
+                      
                     },
               text: "Submit Offer",
               color: buttonColor,

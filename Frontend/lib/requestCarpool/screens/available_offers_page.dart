@@ -1,9 +1,13 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/activeCarpool/controllers/active_carpool_controller.dart';
+import 'package:flutterapp/activeCarpool/screens/active_carpool_page.dart';
 import 'package:flutterapp/requestCarpool/controllers/request_carpool_controller.dart';
 import 'package:flutterapp/requestCarpool/widgets/offer_details_modal.dart';
+import 'package:get/get.dart';
 
 import '../../constants.dart';
 
@@ -24,6 +28,11 @@ class _AvailableOffersPageState extends State<AvailableOffersPage> {
   final List<QueryDocumentSnapshot<Map<String, dynamic>>> offers;
   bool _requestPending = false;
   _AvailableOffersPageState({required this.offers});
+  DatabaseReference requestRef = FirebaseDatabase.instance.ref("requests");
+
+  static SnackBar generateSnackbar({required String text}) {
+    return SnackBar(content: Text(text), backgroundColor: Colors.red);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,36 +77,76 @@ class _AvailableOffersPageState extends State<AvailableOffersPage> {
                           style: const TextStyle(color: Colors.blue),
                         ),
                         subtitle: Text(
-                          "Fare: ${
-                            (offers[index].data()["fare"]/(offers[index].data()["passengers"].length + 1)).toStringAsFixed(2)
-                            }",
+                          "Fare: ${(offers[index].data()["fare"] / (offers[index].data()["passengers"].length + 1)).toStringAsFixed(2)}",
                           style: const TextStyle(color: Colors.blue),
                         ),
                         onTap: () => {
                           RequestCarpoolController.submitRequest(
                                   offers[index].id)
                               .then((value) => {
+                                    //Check for rejection
+                                    requestRef
+                                        .child(offers[index].id)
+                                        .onChildRemoved
+                                        .listen((event) {
+                                      Navigator.of(context).popUntil((route) {
+                                        return route.settings.name ==
+                                            'RequestCarpoolPage';
+                                      });
+                                      if (event.snapshot.value == "Rejected") {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(generateSnackbar(
+                                                text: "Cancelled"));
+                                      }
+                                    }),
+                                    requestRef
+                                        .child(offers[index].id)
+                                        .onChildChanged
+                                        .listen((event) {
+                                      Navigator.of(context).popUntil((route) {
+                                        return route.settings.name ==
+                                            'RequestCarpoolPage';
+                                      });
+                                      if (event.snapshot.value == "Accepted") {
+                                        ActiveCarpoolController.setData(
+                                            carpoolID: offers[index].id,
+                                            offererID: offers[index]
+                                                .data()["offererID"]);
+                                        Get.to(const ActiveCarpoolPage());
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(generateSnackbar(
+                                                text: "Accepted"));
+                                      } else if (event.snapshot.value ==
+                                          "Rejected") {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(generateSnackbar(
+                                                text: "Rejected"));
+                                      }
+                                    }),
                                     showDialog(
-                                        context: context,
-                                        builder: (_) => WillPopScope(
-                                            child: AlertDialog(
-                                              title: const Text("Request Sent!"),
-                                              content: const Text(
-                                                  "Waiting for offerer to accept"),
-                                              actions: [
-                                                TextButton(
-                                                    onPressed: () => {
-                                                          Navigator.of(context)
-                                                              .pop()
-                                                        },
-                                                    child: const Text(
-                                                        "Cancel Request"))
-                                              ],
-                                            ),
-                                            onWillPop: () async {
-                                              return false;
-                                            }),
-                                        barrierDismissible: false)
+                                      context: context,
+                                      builder: (_) => WillPopScope(
+                                          child: AlertDialog(
+                                            title: const Text("Request Sent!"),
+                                            content: const Text(
+                                                "Waiting for offerer to accept"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () => {
+                                                        RequestCarpoolController
+                                                            .cancelRequest(
+                                                                offers[index]
+                                                                    .id)
+                                                      },
+                                                  child: const Text(
+                                                      "Cancel Request"))
+                                            ],
+                                          ),
+                                          onWillPop: () async {
+                                            return false;
+                                          }),
+                                      barrierDismissible: false,
+                                    )
                                   })
                         },
                         onLongPress: () => showModalBottomSheet(

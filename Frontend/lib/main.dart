@@ -44,8 +44,8 @@ class MyApp extends StatelessWidget {
             builder: ((BuildContext context, snapshot) {
               if (FirebaseAuth.instance.currentUser == null) {
                 return const LoginPage();
-              } else if (inCarpool) {
-                return const ActiveCarpoolPage();
+              // } else if (inCarpool) {
+              //   return const ActiveCarpoolPage();
               } else {
                 return const HomePage();
               }

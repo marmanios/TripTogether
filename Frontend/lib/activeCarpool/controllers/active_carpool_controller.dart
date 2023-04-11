@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:flutterapp/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -24,18 +27,51 @@ class ActiveCarpoolController {
 
   static Future<Map<String, dynamic>?> getCarpoolData() async {
     final snapshot = await db.collection('offers').doc(_carpoolID).get();
-    final userData = snapshot.data();
-    return userData;
+    final carpoolData = snapshot.data();
+    return carpoolData;
   }
 
   static void findRequests(String uid) {}
 
-  static void acceptRequest(String uid) {
-    //update DB
-    //update Controller
-    //ping user they in
+  static Future<bool> acceptRequest(String carpoolID, String uid) async {
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref("requests/$carpoolID");
+
+    //Check if request wasnt cancelled
+    ref.child(uid).get().then((DataSnapshot snapshot) async {
+      if (snapshot.value != null) {
+        final snapshot = await db.collection("offers").doc(carpoolID).get();
+        Map<String, dynamic>? data = snapshot.data();
+        List<dynamic> _newPassengers = data!["passengers"];
+        _newPassengers.add(uid);
+        //print(data.toString());
+        // final passengers = snapshot.data()!["passengers"];
+        db
+            .collection("offers")
+            .doc(carpoolID)
+            .update({"passengers": _newPassengers});
+        await ref.set({uid: "Accepted"});
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return false;
   }
-  static void stringDeclineRequest(String uid) {}
+
+  static Future<void> declineRequest(String carpoolID, String uid) async {
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref("requests/$carpoolID");
+
+    //Check if request wasnt cancelled
+    ref.child(uid).get().then((DataSnapshot snapshot) async {
+      if (snapshot.value != null) {
+        final snapshot = await db.collection("offers").doc(carpoolID).get();
+        Map<String, dynamic>? data = snapshot.data();
+        await ref.set({uid: "Rejected"});
+      } else {}
+    });
+  }
 
   static Future<LatLng?> getLatLng(String placeId) async {
     Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json',
