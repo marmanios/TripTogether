@@ -331,6 +331,7 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
               ],
             ),
           ),
+          debugShowCheckedModeBanner: false,
         ),
         onWillPop: () async => false);
   }
