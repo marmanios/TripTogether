@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../constants.dart';
 import '../controllers/user_profile_controller.dart';
 import '../../common/widgets/custom_insertStars.dart';
+import '../../common/widgets/custom_activepage_button.dart';
 
 // User? currentUser = _auth.currentUser;
 String? phoneNumber;
@@ -42,11 +43,15 @@ class ProfilePage extends StatelessWidget {
                       return Stack(children: [
                         Container(
                           decoration: const BoxDecoration(
-                              // image: DecorationImage(
-                              //   image: AssetImage(
-                              //       "assets/profilepagebackground.png"),
-                              // ),
-                              gradient: SweepGradient(colors: Colors.accents)),
+                            // image: DecorationImage(
+                            //     //     image: AssetImage(
+                            //     //         "assets/profilepagebackground.png"),
+                            //     //   ),
+                            //     // ),
+                            // gradient:
+                            //     RadialGradient(colors: [Colors.white10])),
+                            color: Color.fromARGB(255, 211, 229, 238),
+                          ),
                         ),
                         Column(children: [
                           const SizedBox(height: 50),
@@ -115,17 +120,28 @@ class ProfilePage extends StatelessWidget {
 
                           //Buttons ---------------------------------------------------------------------------------------
                           const Spacer(flex: 95),
-                          ProfilePageButton(
-                            text: "Link Spotify",
-                            onTap: () => {UserProfileController.openSpotify()},
-                            buttoncolor: Colors.green,
-                            textColor: Colors.black,
-                            size: 250,
+                          ActiveButton(
+                            text: "Register Spotify",
+                            textSize: 15,
+                            newIcon: Icons.arrow_circle_right,
+                            buttoncolor: Color.fromARGB(255, 2, 104, 28),
+                            textColor: const Color.fromARGB(255, 255, 255, 255),
+                            width: 250,
+                            height: 60,
+                            image: 'assets/spotify.png',
+                            onTap: () =>
+                                {UserProfileController.openSpotify(context)},
                           ),
                           const Spacer(flex: 3),
-
-                          ProfilePageButton(
+                          ActiveButton(
                             text: "Delete Account",
+                            textSize: 15,
+                            newIcon: Icons.arrow_circle_right,
+                            buttoncolor: Color.fromARGB(255, 87, 1, 10),
+                            textColor: const Color.fromARGB(255, 255, 255, 255),
+                            width: 250,
+                            height: 60,
+                            image: 'assets/deleteaccount.png',
                             onTap: () async {
                               bool confirmed = await showDialog(
                                 context: context,
@@ -153,10 +169,9 @@ class ProfilePage extends StatelessWidget {
                                 UserProfileController.deleteAccount(context);
                               }
                             },
-                            buttoncolor: Colors.red,
-                            textColor: Colors.black,
-                            size: 250,
                           ),
+                          const Spacer(flex: 3),
+
                           const Spacer(flex: 5),
 
                           const Spacer(flex: 25),

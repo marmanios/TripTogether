@@ -15,14 +15,14 @@ import '../../common/widgets/custom_sized_icon_button.dart';
 /// A [StatefulWidget] which uses:
 /// * [spotify_sdk](https://pub.dev/packages/spotify_sdk)
 /// to connect to Spotify and use controls.
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class SpotifyPage extends StatefulWidget {
+  const SpotifyPage({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  _SpotifyPageState createState() => _SpotifyPageState();
 }
 
-class _HomeState extends State<Home> {
+class _SpotifyPageState extends State<SpotifyPage> {
   bool _loading = false;
   bool _connected = false;
   final Logger _logger = Logger(
@@ -68,6 +68,7 @@ class _HomeState extends State<Home> {
           );
         },
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 

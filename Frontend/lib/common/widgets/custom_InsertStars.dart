@@ -20,8 +20,9 @@ class InsertStars extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            color: loginTitleColor,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.black),
+            color: Color.fromARGB(255, 4, 115, 199),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -32,9 +33,9 @@ class InsertStars extends StatelessWidget {
               ),
               SizedBox(height: 8.0),
               Text(
-                "Average Rating: $numStars stars",
+                "Average Rating: $numStars Stars",
                 style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold),
               ),
