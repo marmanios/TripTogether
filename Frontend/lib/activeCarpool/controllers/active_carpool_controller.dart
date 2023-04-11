@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import '../screens/display_fare_page.dart';
 
 String? _carpoolID;
 String? _offererID;
@@ -89,4 +90,24 @@ class ActiveCarpoolController {
       return null;
     }
   }
+
+  static void openDisplayFarePage(BuildContext context) {
+    // ignore: prefer_const_constructors
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DisplayFarePage(),
+      ),
+    );
+  }
+
+  // static void openRatePassengerPage(BuildContext context) {
+  //   // ignore: prefer_const_constructors
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const SpotifyPage(),
+  //     ),
+  //   );
+  // }
 }

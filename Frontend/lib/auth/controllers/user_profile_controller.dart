@@ -29,8 +29,13 @@ class UserProfileController {
     Navigator.pop(context);
   }
 
-  static void openSpotify() {
+  static void openSpotify(BuildContext context) {
     // ignore: prefer_const_constructors
-    Get.to(Home());
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SpotifyPage(),
+      ),
+    );
   }
 }

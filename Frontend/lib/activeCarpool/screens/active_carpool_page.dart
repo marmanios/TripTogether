@@ -13,6 +13,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:firebase_database/firebase_database.dart';
 import 'display_fare_page.dart';
 
+import '../../constants.dart';
+
 class ActiveCarpoolPage extends StatefulWidget {
   const ActiveCarpoolPage({Key? key}) : super(key: key);
 
@@ -160,6 +162,7 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
             appBar: AppBar(
               title: const Text("Active Carpool"),
               elevation: 1,
+              backgroundColor: loginTitleColor,
             ),
             body: Column(
               children: [
@@ -298,27 +301,24 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                       width: 250,
                       height: 60,
                       image: 'assets/spotify.png',
-                      onTap: () => {UserProfileController.openSpotify()},
+                      onTap: () => {UserProfileController.openSpotify(context)},
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     ActiveButton(
-                      text: "End Carpool",
-                      textSize: 15,
-                      newIcon: Icons.arrow_circle_left,
-                      buttoncolor: const Color.fromARGB(255, 179, 1, 1),
-                      textColor: const Color.fromARGB(255, 255, 255, 255),
-                      width: 250,
-                      height: 60,
-                      image: 'assets/cancel.png',
-                      onTap: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DisplayFarePage()))
-                      },
-                    ),
+                        text: "End Carpool",
+                        textSize: 15,
+                        newIcon: Icons.arrow_circle_left,
+                        buttoncolor: const Color.fromARGB(255, 179, 1, 1),
+                        textColor: const Color.fromARGB(255, 255, 255, 255),
+                        width: 250,
+                        height: 60,
+                        image: 'assets/cancel.png',
+                        onTap: () => {
+                              ActiveCarpoolController.openDisplayFarePage(
+                                  context)
+                            }),
                   ],
                 ),
               ],
