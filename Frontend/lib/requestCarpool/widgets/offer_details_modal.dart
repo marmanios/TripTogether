@@ -17,7 +17,7 @@ class OfferDetailsModal extends StatefulWidget {
 
 class _OfferDetailsModalState extends State<OfferDetailsModal> {
   final Map<String, dynamic> offerDetails;
-  late List<Map<String, dynamic>> passengerDetails;
+  List<Map<String, dynamic>> passengerDetails = [];
 
   _OfferDetailsModalState({required this.offerDetails});
 

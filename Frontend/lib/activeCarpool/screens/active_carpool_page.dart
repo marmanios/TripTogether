@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutterapp/activeCarpool/controllers/active_carpool_controller.dart';
 import 'package:flutterapp/common/widgets/custom_activepage_button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
+import 'dart:math';
 import '../../common/widgets/custom_home_button.dart';
 
 class ActiveCarpoolPage extends StatefulWidget {
-  const ActiveCarpoolPage({Key? key}):super(key: key);
+  const ActiveCarpoolPage({Key? key}) : super(key: key);
 
   @override
   State<ActiveCarpoolPage> createState() => _ActiveCarpoolPageState();
@@ -38,7 +39,7 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
 
   void _getCarpoolData() async {
     Map<String, dynamic>? data = await ActiveCarpoolController.getCarpoolData();
-    print(data);
+    //print(data);
     setState(() {
       this.carpoolData = data;
     });
@@ -97,41 +98,41 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                     markers: _markers.values.toSet(),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 carpoolData == null
                     ? Container()
                     : SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Container(
-                          height: 100,
-                          color: Color.fromARGB(255, 202, 217, 225),
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Passengers:",
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width),
+                          child: Container(
+                            height: 100,
+                            color: const Color.fromARGB(255, 202, 217, 225),
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Passengers:",
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                color: Color.fromARGB(255, 202, 217, 225),
-                                child: Column(children: [
-                                  Row(
-                                    children: [
-                                      for (var i =
-                                              0; //Passengers Loop -----------------------------------------------------------------------------------------------------------
-                                          i < 7; //This needs to change to the number of passengers currently riding. Since Im assuming the carpool won't always be full.
-                                          i++)
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  color:
+                                      const Color.fromARGB(255, 202, 217, 225),
+                                  child: Column(children: [
+                                    Row(
+                                      children: [
+                    
                                         Row(
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               Icons.account_circle_outlined,
                                               size: 30,
                                             ),
@@ -141,27 +142,20 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                                                 fontSize: fontSize,
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 120,
                                             ),
                                           ],
                                         ),
+                                      ],
+                                    ),
 
-                                      //IconTextColumns(count: 4),
-                                    ],
-                                  ),
-                                  // Row(
-                                  //   children: const [Text("Passengers")],
-                                  // ),
-                                  // Row(
-                                  //   children: const [Text("Passengers")],
-                                  // )
-                                ]),
-                              ),
-                            ],
+                                  ]),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
+                        )),
 
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -197,10 +191,10 @@ class _ActiveCarpoolPageState extends State<ActiveCarpoolPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                          "Placeholder Destination",
+                        Flexible(child: Text(
+                          carpoolData!["destination"]["formattedAddress"],
                           style: TextStyle(fontSize: 20),
-                        )
+                        ))
                       ],
                     )
                   ],

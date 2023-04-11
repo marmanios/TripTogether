@@ -2,11 +2,12 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/requestCarpool/controllers/request_carpool_controller.dart';
 import 'package:flutterapp/requestCarpool/widgets/offer_details_modal.dart';
 
 import '../../constants.dart';
 
-class AvailableOffersPage extends StatelessWidget {
+class AvailableOffersPage extends StatefulWidget {
   final List<QueryDocumentSnapshot<Map<String, dynamic>>> offers;
   const AvailableOffersPage({
     Key? key,
@@ -14,8 +15,18 @@ class AvailableOffersPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<AvailableOffersPage> createState() =>
+      // ignore: no_logic_in_create_state
+      _AvailableOffersPageState(offers: offers);
+}
+
+class _AvailableOffersPageState extends State<AvailableOffersPage> {
+  final List<QueryDocumentSnapshot<Map<String, dynamic>>> offers;
+  bool _requestPending = false;
+  _AvailableOffersPageState({required this.offers});
+
+  @override
   Widget build(BuildContext context) {
-    print(offers);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -56,12 +67,37 @@ class AvailableOffersPage extends StatelessWidget {
                               ["formattedAddress"],
                           style: const TextStyle(color: Colors.blue),
                         ),
-                        subtitle: Text("Fare: ${offers[index].data()["fare"] /
-                                  (offers[index].data()["passengers"].length +
-                                      2)}",
+                        subtitle: Text(
+                          "Fare: ${offers[index].data()["fare"] / (offers[index].data()["passengers"].length + 2)}",
                           style: const TextStyle(color: Colors.blue),
                         ),
-                        onTap: () => print(offers[index].id),
+                        onTap: () => {
+                          RequestCarpoolController.submitRequest(
+                                  offers[index].id)
+                              .then((value) => {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => WillPopScope(
+                                            child: AlertDialog(
+                                              title: const Text("Request Sent!"),
+                                              content: const Text(
+                                                  "Waiting for offerer to accept"),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () => {
+                                                          Navigator.of(context)
+                                                              .pop()
+                                                        },
+                                                    child: const Text(
+                                                        "Cancel Request"))
+                                              ],
+                                            ),
+                                            onWillPop: () async {
+                                              return false;
+                                            }),
+                                        barrierDismissible: false)
+                                  })
+                        },
                         onLongPress: () => showModalBottomSheet(
                           context: context,
                           backgroundColor: Colors.transparent,
@@ -80,7 +116,9 @@ class AvailableOffersPage extends StatelessWidget {
                                     topRight: Radius.circular(20),
                                   ),
                                 ),
-                                child: OfferDetailsModal(offerDetails:offers[index].data(),),
+                                child: OfferDetailsModal(
+                                  offerDetails: offers[index].data(),
+                                ),
                               ),
                             );
                           },

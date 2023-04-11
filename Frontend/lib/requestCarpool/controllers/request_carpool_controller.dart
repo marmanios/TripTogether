@@ -27,21 +27,19 @@ class RequestCarpoolController {
   }) async {
     final collectionRef = FirebaseFirestore.instance.collection('offers');
     final destinationCityName = await getCityName(destinationLocationID);
-    // create a query to filter documents where destination == 'town' and limit the results to 10 documents
-    // print(destinationCityName);
-    // print(isFemaleOnly);
     final querySnapshot = await collectionRef
         .where('destination.destinationCity', isEqualTo: destinationCityName)
         .where('isFemaleOnly', isEqualTo: isFemaleOnly)
         .limit(10)
         .get();
-    // print(querySnapshot);
-    // for (var element in querySnapshot.docs) {
-    //   print(element.data());
-    // }
-
+    querySnapshot.docs[0].data();
     return querySnapshot.docs;
   }
+
+  static Future<void> submitRequest(String offerID) async {
+    print(offerID);
+  }
+  static Future<void> cancelRequest(String request) async {}
 
   static Future<String?> getCityName(String placeId) async {
     Uri uri = Uri.https("maps.googleapis.com", 'maps/api/place/details/json',
