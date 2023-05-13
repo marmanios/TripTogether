@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // For all Pages
 const buttonTextColor = Colors.white;
@@ -30,6 +31,6 @@ const googleGradient = LinearGradient(
   ],
 );
 
-const APIkey = "AIzaSyDbvsJq206FO6dDArKF6hfsF9UuTwyFcD4";
+String APIkey = dotenv.env['MAPS_API_KEY'].toString();
 const taxiRatePerKm = 3.00;
 const taxiFlatRate = 2.40;
